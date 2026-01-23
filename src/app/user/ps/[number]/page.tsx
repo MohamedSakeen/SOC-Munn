@@ -13,7 +13,7 @@ import Paragraph from '@editorjs/paragraph';
 import Code from '@editorjs/code';
 
 export default function PSPage({ params }: { params: Promise<{ number: string }> }) {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const editorRef = useRef<EditorJS | null>(null);
   const [psNumber, setPsNumber] = useState<number>(0);
@@ -23,6 +23,9 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
+    // Don't do anything while auth is loading
+    if (authLoading) return;
+    
     params.then(resolvedParams => {
       const num = parseInt(resolvedParams.number);
       setPsNumber(num);
@@ -34,7 +37,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
 
       fetchPS(num);
     });
-  }, [params, user, router]);
+  }, [params, user, authLoading, router]);
 
   useEffect(() => {
     if (ps?.submission?.hasStarted && !ps?.submission?.isCompleted) {
@@ -58,9 +61,18 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
     try {
       const response = await api.get(`/user/ps/${num}`);
       setPs(response.data);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to fetch PS:', error);
-      router.push('/user/dashboard');
+      
+      // Check if it's a 403 (not assigned to this PS)
+      if (error.response?.status === 403) {
+        alert('You are not assigned to Problem Statement ' + num);
+        router.push('/user/dashboard');
+      } else {
+        // Other errors, redirect to dashboard
+        alert('Failed to load problem statement');
+        router.push('/user/dashboard');
+      }
     } finally {
       setLoading(false);
     }
@@ -106,7 +118,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
     return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-xl">Loading...</div>

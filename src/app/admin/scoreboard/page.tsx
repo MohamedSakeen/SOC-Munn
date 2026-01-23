@@ -7,19 +7,22 @@ import api from '@/lib/api';
 import { Team } from '@/types';
 
 export default function AdminScoreboard() {
-  const { user, logout } = useAuth();
+  const { user, logout, loading: authLoading } = useAuth();
   const router = useRouter();
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Don't do anything while auth is loading
+    if (authLoading) return;
+    
     if (!user || user.role !== 'admin') {
       router.push('/login');
       return;
     }
 
     fetchScoreboard();
-  }, [user, router]);
+  }, [user, authLoading, router]);
 
   const fetchScoreboard = async () => {
     try {
@@ -41,7 +44,7 @@ export default function AdminScoreboard() {
     return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-xl">Loading...</div>

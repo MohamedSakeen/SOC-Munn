@@ -7,7 +7,7 @@ import api from '@/lib/api';
 import { Submission } from '@/types';
 
 export default function UserDashboard() {
-  const { user, logout } = useAuth();
+  const { user, logout, loading: authLoading } = useAuth();
   const router = useRouter();
   const [teamName, setTeamName] = useState('');
   const [assignedPS, setAssignedPS] = useState<number>(0);
@@ -17,13 +17,16 @@ export default function UserDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Don't do anything while auth is loading
+    if (authLoading) return;
+    
     if (!user || user.role !== 'user') {
       router.push('/login');
       return;
     }
 
     fetchDashboard();
-  }, [user, router]);
+  }, [user, authLoading, router]);
 
   const fetchDashboard = async () => {
     try {
@@ -66,7 +69,7 @@ export default function UserDashboard() {
     }
   };
 
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-xl">Loading...</div>

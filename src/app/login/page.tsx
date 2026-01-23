@@ -1,14 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    // If already logged in, redirect to appropriate page
+    if (user) {
+      const redirect = searchParams.get('redirect');
+      if (redirect && 
+          ((user.role === 'admin' && redirect.startsWith('/admin')) ||
+           (user.role === 'user' && redirect.startsWith('/user')))) {
+        router.push(redirect);
+      } else {
+        router.push(user.role === 'admin' ? '/admin/scoreboard' : '/user/dashboard');
+      }
+    }
+  }, [user, router, searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

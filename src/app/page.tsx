@@ -12,7 +12,7 @@ export default function Home() {
     if (!loading) {
       if (user) {
         if (user.role === 'admin') {
-          router.push('/admin/scoreboard');
+          router.push('/admin/submissions');
         } else {
           router.push('/user/dashboard');
         }

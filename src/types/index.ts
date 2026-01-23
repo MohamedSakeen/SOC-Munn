@@ -13,6 +13,8 @@ export interface Submission {
   completedTime: string | null;
   timeTaken: number | null;
   submissionContent: any;
+  score?: number;
+  scoredAt?: string | null;
 }
 
 export interface ProblemStatement {
@@ -29,4 +31,5 @@ export interface Team {
   teamMembers: string[];
   assignedPS: number;
   submissions: Submission[];
+  totalScore?: number;
 }

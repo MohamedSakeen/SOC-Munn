@@ -57,8 +57,14 @@ export default function AdminScoreboard() {
       {/* Header */}
       <nav className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Admin Scoreboard</h1>
+          <h1 className="text-2xl font-bold">🏆 Leaderboard</h1>
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => router.push('/admin/submissions')}
+              className="px-4 py-2 text-sm bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+            >
+              Review Submissions
+            </button>
             <button
               onClick={fetchScoreboard}
               className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -76,70 +82,49 @@ export default function AdminScoreboard() {
       </nav>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-5xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Rank
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Team Name
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Username
+                  Members
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Assigned PS
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Time Taken
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Completed At
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Score
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {teams.map((team) => {
-                const submission = team.submissions.find(s => s.psNumber === team.assignedPS);
+              {teams.map((team, index) => {
                 return (
-                  <tr key={team.teamId}>
+                  <tr key={team.teamId} className={index < 3 ? 'bg-yellow-50' : ''}>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{team.teamName}</div>
-                      <div className="text-sm text-gray-500">
+                      <div className="flex items-center">
+                        {index === 0 && <span className="text-4xl mr-2">🥇</span>}
+                        {index === 1 && <span className="text-4xl mr-2">🥈</span>}
+                        {index === 2 && <span className="text-4xl mr-2">🥉</span>}
+                        {index > 2 && <span className="text-xl font-bold text-gray-600 mr-2">{index + 1}</span>}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-lg font-bold text-gray-900">{team.teamName}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-600">
                         {team.teamMembers.join(', ')}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {team.username}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      PS {team.assignedPS}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {submission?.isCompleted ? (
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          Completed
-                        </span>
-                      ) : submission?.hasStarted ? (
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                          In Progress
-                        </span>
-                      ) : (
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                          Not Started
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">
-                      {formatTime(submission?.timeTaken || null)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {submission?.completedTime
-                        ? new Date(submission.completedTime).toLocaleString()
-                        : '-'}
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      <span className="text-3xl font-bold text-blue-600">
+                        {team.totalScore || 0}
+                      </span>
                     </td>
                   </tr>
                 );

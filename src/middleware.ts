@@ -40,8 +40,8 @@ export function middleware(request: NextRequest) {
   // User routes
   if (pathname.startsWith('/user')) {
     if (user.role !== 'user') {
-      // Admin trying to access user - redirect to admin scoreboard
-      return NextResponse.redirect(new URL('/admin/scoreboard', request.url));
+      // Admin trying to access user - redirect to admin submissions
+      return NextResponse.redirect(new URL('/admin/submissions', request.url));
     }
     return NextResponse.next();
   }

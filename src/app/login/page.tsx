@@ -22,7 +22,7 @@ export default function LoginPage() {
            (user.role === 'user' && redirect.startsWith('/user')))) {
         router.push(redirect);
       } else {
-        router.push(user.role === 'admin' ? '/admin/scoreboard' : '/user/dashboard');
+        router.push(user.role === 'admin' ? '/admin/submissions' : '/user/dashboard');
       }
     }
   }, [user, router, searchParams]);

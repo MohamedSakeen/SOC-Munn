@@ -97,17 +97,30 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
 
   const handleSubmit = async () => {
     if (!editorRef.current) return;
+    
+    // Prevent multiple submissions (race condition)
+    if (submitting) return;
 
     try {
       setSubmitting(true);
       const content = await editorRef.current.save();
+      
+      // Client-side size check for better UX (5MB limit)
+      const contentSize = JSON.stringify(content).length;
+      const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+      if (contentSize > MAX_SIZE) {
+        alert('Your submission is too large. Please reduce the content size.');
+        setSubmitting(false);
+        return;
+      }
+      
       await api.post(`/user/ps/${psNumber}/submit`, { content });
       alert('Challenge submitted successfully!');
       router.push('/user/dashboard');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to submit:', error);
-      alert('Failed to submit challenge');
-    } finally {
+      const message = error.response?.data?.message || 'Failed to submit challenge';
+      alert(message);
       setSubmitting(false);
     }
   };

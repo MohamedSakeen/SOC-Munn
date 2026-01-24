@@ -12,6 +12,7 @@ import List from '@editorjs/list';
 import Paragraph from '@editorjs/paragraph';
 import Code from '@editorjs/code';
 import { LoaderFive } from '@/components/ui/loader';
+import { toast, Toaster } from 'sonner';
 
 export default function PSPage({ params }: { params: Promise<{ number: string }> }) {
   const { user, loading: authLoading } = useAuth();
@@ -62,21 +63,19 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
     try {
       const response = await api.get(`/user/ps/${num}`);
       setPs(response.data);
+      setLoading(false);
     } catch (error: any) {
       console.error('Failed to fetch PS:', error);
       
       // Check if it's a 403 error
       if (error.response?.status === 403) {
         const message = error.response?.data?.message || 'Access denied';
-        alert(message);
-        router.push('/user/dashboard');
+        router.push(`/user/dashboard?error=${encodeURIComponent(message)}`);
       } else {
         // Other errors, redirect to dashboard
-        alert('Failed to load problem statement');
-        router.push('/user/dashboard');
+        router.push(`/user/dashboard?error=${encodeURIComponent('Failed to load problem statement')}`);
       }
-    } finally {
-      setLoading(false);
+      // Don't set loading to false here - keep showing loader until redirect completes
     }
   };
 
@@ -110,18 +109,17 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
       const contentSize = JSON.stringify(content).length;
       const MAX_SIZE = 5 * 1024 * 1024; // 5MB
       if (contentSize > MAX_SIZE) {
-        alert('Your submission is too large. Please reduce the content size.');
+        toast.warning('Your submission is too large. Please reduce the content size.');
         setSubmitting(false);
         return;
       }
       
       await api.post(`/user/ps/${psNumber}/submit`, { content });
-      alert('Challenge submitted successfully!');
-      router.push('/user/dashboard');
+      router.push('/user/dashboard?success=Challenge submitted successfully!');
     } catch (error: any) {
       console.error('Failed to submit:', error);
       const message = error.response?.data?.message || 'Failed to submit challenge';
-      alert(message);
+      toast.error(message);
       setSubmitting(false);
     }
   };
@@ -152,7 +150,9 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
   const isCompleted = ps.submission?.isCompleted;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
+      <Toaster position="top-right" theme="dark" richColors />
+      <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <nav className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -214,6 +214,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

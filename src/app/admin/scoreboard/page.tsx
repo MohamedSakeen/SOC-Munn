@@ -7,6 +7,7 @@ import api from '@/lib/api';
 import { Team } from '@/types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { LoaderFive } from '@/components/ui/loader';
+import { toast, Toaster } from 'sonner';
 
 export default function AdminScoreboard() {
   const { user, logout, loading: authLoading } = useAuth();
@@ -41,6 +42,7 @@ export default function AdminScoreboard() {
       setTeams(response.data);
     } catch (error) {
       console.error('Failed to fetch scoreboard:', error);
+      toast.error('Failed to load scoreboard data');
     } finally {
       setLoading(false);
     }
@@ -112,7 +114,9 @@ export default function AdminScoreboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
+      <Toaster position="top-right" theme="dark" richColors />
+      <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <nav className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -263,6 +267,7 @@ export default function AdminScoreboard() {
           </table>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoaderFive } from '@/components/ui/loader';
 import { cn } from '@/lib/utils';
+import { toast, Toaster } from 'sonner';
 
 const BottomGradient = () => {
   return (
@@ -31,17 +32,33 @@ const LabelInputContainer = ({
   );
 };
 
-export default function LoginPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-  const { login, user } = useAuth();
+// Component to handle URL params toast
+function ToastHandler() {
+  const searchParams = useSearchParams();
+  
+  useEffect(() => {
+    const error = searchParams.get('error');
+    const success = searchParams.get('success');
+    
+    if (error) {
+      toast.error(decodeURIComponent(error));
+      window.history.replaceState({}, '', '/login');
+    }
+    if (success) {
+      toast.success(decodeURIComponent(success));
+      window.history.replaceState({}, '', '/login');
+    }
+  }, [searchParams]);
+
+  return null;
+}
+
+// Component to handle redirect logic
+function RedirectHandler({ user, setLoading }: { user: any; setLoading: (loading: boolean) => void }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    // If already logged in, redirect to appropriate page
     if (user) {
       const redirect = searchParams.get('redirect');
       if (redirect && 
@@ -52,10 +69,20 @@ export default function LoginPage() {
         router.push(user.role === 'admin' ? '/admin/submissions' : '/user/dashboard');
       }
     } else {
-      // User is not logged in, stop showing loading screen
       setLoading(false);
     }
-  }, [user, router, searchParams]);
+  }, [user, router, searchParams, setLoading]);
+
+  return null;
+}
+
+export default function LoginPage() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+  const { login, user } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,7 +105,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
+    <>
+      <Toaster position="top-right" theme="dark" richColors />
+      <Suspense fallback={null}>
+        <ToastHandler />
+        <RedirectHandler user={user} setLoading={setLoading} />
+      </Suspense>
+      <div className="min-h-screen flex items-center justify-center bg-black">
       <div className="shadow-input mx-auto w-full max-w-md rounded-2xl bg-white p-8 dark:bg-black">
         <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
           SOC Challenge Platform
@@ -124,6 +157,7 @@ export default function LoginPage() {
           </button>
         </form>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

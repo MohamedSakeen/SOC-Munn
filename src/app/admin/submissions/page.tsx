@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import { Team } from '@/types';
 import { LoaderFive } from '@/components/ui/loader';
+import { toast, Toaster } from 'sonner';
 
 export default function AdminSubmissions() {
   const { user, logout, loading: authLoading } = useAuth();
@@ -69,11 +70,11 @@ export default function AdminSubmissions() {
 
     try {
       await api.post(`/admin/score/${teamId}/${psNumber}`, { score });
-      alert('Score updated successfully!');
+      toast.success('Score updated successfully!');
       fetchSubmissions(); // Refresh data
     } catch (error) {
       console.error('Failed to update score:', error);
-      alert('Failed to update score');
+      toast.error('Failed to update score');
     }
   };
 
@@ -148,7 +149,9 @@ export default function AdminSubmissions() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
+      <Toaster position="top-right" theme="dark" richColors />
+      <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <nav className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -337,6 +340,7 @@ export default function AdminSubmissions() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

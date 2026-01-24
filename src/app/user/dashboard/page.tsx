@@ -91,25 +91,27 @@ export default function UserDashboard() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <nav className="bg-neutral-900 shadow-sm border-b border-neutral-800">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">SOC Challenge</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-neutral-300">{teamName}</span>
-            <button
-              onClick={logout}
-              className="group/btn relative px-4 py-2 text-sm rounded-md bg-gradient-to-br from-red-900 to-red-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] hover:from-red-800 hover:to-red-500"
-            >
-              Logout
-              <BottomGradient />
-            </button>
+      {/* Simple Navbar */}
+      <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-md border-b border-neutral-800 rounded-b-3xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <h1 className="text-2xl font-bold text-white">SOC Challenge</h1>
+            <div className="flex items-center gap-4">
+              <span className="text-neutral-300 text-sm sm:text-base">{teamName}</span>
+              <button
+                onClick={logout}
+                className="group/btn relative px-4 py-2 text-sm rounded-md bg-gradient-to-br from-red-900 to-red-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] hover:from-red-800 hover:to-red-500 transition-all"
+              >
+                Logout
+                <BottomGradient />
+              </button>
+            </div>
           </div>
         </div>
       </nav>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h2 className="text-3xl font-bold mb-8 text-white">Your Challenges</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

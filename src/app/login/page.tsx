@@ -53,36 +53,19 @@ function ToastHandler() {
   return null;
 }
 
-// Component to handle redirect logic
-function RedirectHandler({ user, setLoading }: { user: any; setLoading: (loading: boolean) => void }) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    if (user) {
-      const redirect = searchParams.get('redirect');
-      if (redirect && 
-          ((user.role === 'admin' && redirect.startsWith('/admin')) ||
-           (user.role === 'user' && redirect.startsWith('/user')))) {
-        router.push(redirect);
-      } else {
-        router.push(user.role === 'admin' ? '/admin/submissions' : '/user/dashboard');
-      }
-    } else {
-      setLoading(false);
-    }
-  }, [user, router, searchParams, setLoading]);
-
-  return null;
-}
-
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-  const { login, user } = useAuth();
+  const { login, user, loading: authLoading } = useAuth();
   const router = useRouter();
+
+  // Handle redirect if user is already logged in
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.push(user.role === 'admin' ? '/admin/submissions' : '/user/dashboard');
+    }
+  }, [user, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,7 +79,7 @@ export default function LoginPage() {
   };
 
   // Show centered loader while checking authentication
-  if (loading) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
         <LoaderFive text="Loading" />
@@ -109,7 +92,6 @@ export default function LoginPage() {
       <Toaster position="top-right" theme="dark" richColors />
       <Suspense fallback={null}>
         <ToastHandler />
-        <RedirectHandler user={user} setLoading={setLoading} />
       </Suspense>
       <div className="min-h-screen flex items-center justify-center bg-black">
       <div className="shadow-input mx-auto w-full max-w-md rounded-2xl bg-white p-8 dark:bg-black">

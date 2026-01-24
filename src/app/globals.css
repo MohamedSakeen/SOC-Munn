@@ -120,6 +120,17 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-black text-foreground;
+  }
+
+  /* Prevent horizontal text overflow - wrap to new line */
+  p, span, div, pre, code {
+    @apply break-words;
+    overflow-wrap: anywhere;
+  }
+  
+  /* For code blocks and pre tags */
+  pre {
+    @apply whitespace-pre-wrap;
   }
 }

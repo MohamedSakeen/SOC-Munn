@@ -226,7 +226,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
   return (
     <>
       <Toaster position="top-right" theme="dark" richColors />
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-black">
         {/* Header */}
         <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-800/50 rounded-b-3xl">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -254,11 +254,11 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
         </nav>
 
         {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[calc(100vh-8rem)]">
             {/* Problem Description */}
-            <Card className="bg-neutral-900/50 border-neutral-800/50 backdrop-blur-sm overflow-hidden flex flex-col">
-              <CardHeader className="border-b border-neutral-800/50 pb-4">
+            <Card className="bg-neutral-900/50 border-neutral-800/50 backdrop-blur-sm overflow-hidden flex flex-col min-h-0">
+              <CardHeader className="border-b border-neutral-800/50 pb-4 flex-shrink-0">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div>
@@ -289,9 +289,9 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
             </Card>
 
             {/* Editor Section */}
-            <div className="flex flex-col gap-4">
-              <Card className="bg-neutral-900/50 border-neutral-800/50 backdrop-blur-sm flex-1 overflow-hidden flex flex-col">
-                <CardHeader className="border-b border-neutral-800/50 pb-4">
+            <div className="flex flex-col gap-4 min-h-0">
+              <Card className="bg-neutral-900/50 border-neutral-800/50 backdrop-blur-sm flex-1 overflow-hidden flex flex-col min-h-0">
+                <CardHeader className="border-b border-neutral-800/50 pb-4 flex-shrink-0">
                   <div className="flex items-center gap-3">
                     <div>
                       <CardTitle className="text-lg text-white">Your Report</CardTitle>
@@ -299,7 +299,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                     </div>
                   </div>
                 </CardHeader>
-                <div className="flex-1 overflow-hidden">
+                <div className="flex-1 overflow-hidden min-h-0">
                   <ScrollArea className="h-full">
                     <div id="editorjs" className="prose prose-invert prose-sm max-w-none min-h-[200px] py-4 px-6"></div>
                   </ScrollArea>

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import { Team } from '@/types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LoaderFive } from '@/components/ui/loader';
 
 export default function AdminScoreboard() {
   const { user, logout, loading: authLoading } = useAuth();
@@ -105,7 +106,7 @@ export default function AdminScoreboard() {
   if (loading || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
+        <LoaderFive text="Loading" />
       </div>
     );
   }

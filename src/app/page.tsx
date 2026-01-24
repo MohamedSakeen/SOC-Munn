@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { LoaderFive } from '@/components/ui/loader';
 
 export default function Home() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="text-xl">Loading...</div>
+      <LoaderFive text="Loading" />
     </div>
   );
 }

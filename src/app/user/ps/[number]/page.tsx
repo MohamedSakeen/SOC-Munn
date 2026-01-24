@@ -11,6 +11,7 @@ import Header from '@editorjs/header';
 import List from '@editorjs/list';
 import Paragraph from '@editorjs/paragraph';
 import Code from '@editorjs/code';
+import { LoaderFive } from '@/components/ui/loader';
 
 export default function PSPage({ params }: { params: Promise<{ number: string }> }) {
   const { user, loading: authLoading } = useAuth();
@@ -135,7 +136,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
   if (loading || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
+        <LoaderFive text="Loading" />
       </div>
     );
   }

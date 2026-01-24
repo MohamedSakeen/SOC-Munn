@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import { Submission } from '@/types';
+import { LoaderFive } from '@/components/ui/loader';
 
 export default function UserDashboard() {
   const { user, logout, loading: authLoading } = useAuth();
@@ -72,7 +73,7 @@ export default function UserDashboard() {
   if (loading || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
+        <LoaderFive text="Loading" />
       </div>
     );
   }

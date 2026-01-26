@@ -236,7 +236,9 @@ export default function AdminSubmissions() {
                             </div>
                             <div className="text-center">
                               <p className="text-neutral-400">Penalty</p>
-                              <p className="text-orange-400 font-bold">-{getTotalPenalty(team)}</p>
+                              <p className="text-orange-400 font-bold">
+                                {getTotalPenalty(team)>0 ? `-${getTotalPenalty(team)}` : 0}
+                                </p>
                             </div>
                             <div className="text-center">
                               <p className="text-neutral-400">Score</p>

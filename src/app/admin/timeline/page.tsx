@@ -236,7 +236,7 @@ export default function AdminTimeline() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="pt-6">
+            <CardContent>
               {/* Team Selection */}
               <div className="flex flex-wrap gap-2 mb-6">
                 {teamsTimeline.map((team, index) => {
@@ -247,10 +247,10 @@ export default function AdminTimeline() {
                       key={team.teamId}
                       onClick={() => toggleTeam(team.teamId)}
                       className={cn(
-                        "flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all",
+                        "flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all cursor-pointer bg-neutral-800/50 border border-neutral-700 hover:bg-neutral-700/50",
                         isSelected
-                          ? "bg-neutral-700 text-white"
-                          : "bg-neutral-800/50 text-neutral-500 hover:bg-neutral-700/50"
+                          ? "text-white"
+                          : "text-neutral-500 hover:bg-neutral-700/50"
                       )}
                     >
                       <span

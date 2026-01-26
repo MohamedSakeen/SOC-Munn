@@ -48,6 +48,15 @@ export default function UserDashboard() {
   const [problemStatements, setProblemStatements] = useState<ProblemStatement[]>([]);
   const [loading, setLoading] = useState(true);
 
+    const BottomGradient = () => {
+    return (
+      <>
+        <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-linear-to-r from-transparent via-red-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+        <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-linear-to-r from-transparent via-red-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+      </>
+    );
+  };
+
   useEffect(() => {
     if (authLoading) return;
     
@@ -116,9 +125,10 @@ export default function UserDashboard() {
               <div className="flex items-center gap-4">
                 <button
                   onClick={logout}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-linear-to-br from-red-900 to-red-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] hover:from-red-800 hover:to-red-500 transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
                 >
                   Logout
+                  <BottomGradient />
                 </button>
               </div>
             </div>
@@ -128,7 +138,7 @@ export default function UserDashboard() {
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Score Summary */}
-          <div className="mb-8 p-6 rounded-xl bg-gradient-to-br from-neutral-900 to-neutral-800 border border-neutral-700">
+          <div className="mb-8 p-6 rounded-xl bg-linear-to-br from-neutral-900 to-neutral-800 border border-neutral-700">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <h2 className="text-3xl font-bold text-white mb-1">Welcome, {teamName}!</h2>
@@ -136,7 +146,7 @@ export default function UserDashboard() {
               </div>
               <div className="text-right">
                 <p className="text-sm text-neutral-400 mb-1">Total Score</p>
-                <p className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                <p className="text-4xl font-bold bg-linear-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                   {totalScore}
                 </p>
               </div>
@@ -176,23 +186,12 @@ export default function UserDashboard() {
                     <div className="h-2 bg-neutral-800 rounded-full overflow-hidden">
                       <div 
                         className={cn(
-                          "h-full bg-gradient-to-r transition-all duration-500",
+                          "h-full bg-linear-to-r transition-all duration-500",
                           getProgressColor(ps.completedQuestions, ps.totalQuestions)
                         )}
                         style={{ width: `${(ps.completedQuestions / ps.totalQuestions) * 100}%` }}
                       />
                     </div>
-                  </div>
-
-                  {/* Score */}
-                  <div className="mt-4 flex items-center justify-between">
-                    <span className="text-neutral-400 text-sm">Score</span>
-                    <span className={cn(
-                      "font-bold text-lg",
-                      ps.score > 0 ? "text-cyan-400" : "text-neutral-500"
-                    )}>
-                      {ps.score > 0 ? `+${ps.score}` : ps.score}
-                    </span>
                   </div>
                 </div>
               </SpotlightCard>

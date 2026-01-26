@@ -62,14 +62,22 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
   const [openQuestion, setOpenQuestion] = useState<number | null>(0);
   const [showHints, setShowHints] = useState<{ [key: number]: boolean }>({});
 
-  const BottomGradient = () => {
-  return (
-    <>
-      <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-linear-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
-      <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-linear-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
-    </>
-  );
-};
+  const DashboardGradient = () => {
+    return (
+      <>
+        <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-linear-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+        <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-linear-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+      </>
+    );
+  };
+  const SubmitGradient = () => {
+    return (
+      <>
+        <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-linear-to-r from-transparent via-green-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+        <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-linear-to-r from-transparent via-green-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+      </>
+    );
+  };
 
   useEffect(() => {
     if (authLoading) return;
@@ -198,12 +206,6 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center gap-4">
-                <button
-                  onClick={() => router.push('/user/dashboard')}
-                  className="p-2 text-neutral-400 hover:text-white transition-colors"
-                >
-                  <ArrowLeft className="w-5 h-5" />
-                </button>
                 <div>
                   <h1 className="text-lg font-semibold text-white">{ps.title}</h1>
                   <p className="text-xs text-neutral-500">Problem Statement {psNumber}</p>
@@ -211,11 +213,18 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
               </div>
               
               <div className="flex items-center gap-4">
-                {/* Progress */}
-                <div className="flex items-center gap-3 px-4 py-2 bg-neutral-800/50 border border-neutral-700/50 rounded-xl">
+                <div className="flex items-center gap-3 px-4 py-2 bg-neutral-800/50 border border-neutral-700/50 rounded-xl group/btn relative text-sm font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer">
                   <Trophy className="w-4 h-4 text-yellow-400" />
                   <span className="text-sm text-white font-medium">{completedCount}/{totalQuestions}</span>
                 </div>
+                <button
+                  onClick={() => router.push('/user/dashboard')}
+                  className="group/btn flex items-center rounded-xl gap-2 relative px-4 py-3 text-sm bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span className="text-sm font-medium">Back to Dashboard</span>
+                  <DashboardGradient />
+                </button>
               </div>
             </div>
           </div>
@@ -335,14 +344,14 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                             <Button
                               onClick={() => handleSubmitAnswer(index)}
                               disabled={submittingQuestion === index || !answers[index]?.trim()}
-                              className="group/btn relative block h-10 w-fit px-6 mx-auto rounded-md bg-linear-to-br font-medium text-white bg-zinc-800 from-zinc-900 to-zinc-900 shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset] cursor-pointer"
+                              className="group/btn relative px-6 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer h-10 w-fit mx-auto hover:bg-neutral-800/50"
                             >
                               {submittingQuestion === index ? (
                                 <Spinner className="w-4 h-4" />
                               ) : (
                                 'Submit'
                               )}
-                              <BottomGradient />
+                              <SubmitGradient />
                             </Button>
                           </div>
                         ) : (

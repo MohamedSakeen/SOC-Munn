@@ -7,9 +7,8 @@ import api from '@/lib/api';
 import { LoaderFive } from '@/components/ui/loader';
 import { toast, Toaster } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { Trophy, Droplet, Check, Medal } from 'lucide-react';
+import { Trophy, Droplet, Check } from 'lucide-react';
 
 interface Team {
   teamId: string;
@@ -26,6 +25,21 @@ export default function AdminScoreboard() {
   const router = useRouter();
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const BottomGradient = ({ color }: { color: 'red' | 'blue' | 'purple' | 'green' }) => {
+    const colorMap = {
+      red: 'via-red-500',
+      blue: 'via-blue-500',
+      purple: 'via-purple-500',
+      green: 'via-green-500'
+    };
+    return (
+      <>
+        <span className={`absolute inset-x-0 -bottom-px block h-px w-full bg-linear-to-r from-transparent ${colorMap[color]} to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100`} />
+        <span className={`absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-linear-to-r from-transparent ${colorMap[color]} to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100`} />
+      </>
+    );
+  };
 
   useEffect(() => {
     if (authLoading) return;
@@ -79,22 +93,32 @@ export default function AdminScoreboard() {
               </h1>
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => router.push('/admin/submissions')}
-                  className="px-4 py-2 text-sm bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-lg hover:from-purple-500 hover:to-purple-400 transition-all"
+                  onClick={() => router.push('/admin/timeline')}
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
                 >
-                  View Submissions
+                  Timeline
+                  <BottomGradient color="blue" />
                 </button>
                 <button
-                  onClick={fetchScoreboard}
-                  className="px-4 py-2 text-sm bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg hover:from-blue-500 hover:to-blue-400 transition-all"
+                  onClick={() => router.push('/admin/submissions')}
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                >
+                  Submissions
+                  <BottomGradient color="purple" />
+                </button>
+                <button
+                  onClick={() => { fetchScoreboard(); }}
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
                 >
                   Refresh
+                  <BottomGradient color="green" />
                 </button>
                 <button
                   onClick={logout}
-                  className="px-4 py-2 text-sm bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg hover:from-red-500 hover:to-red-400 transition-all"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
                 >
                   Logout
+                  <BottomGradient color="red" />
                 </button>
               </div>
             </div>
@@ -120,7 +144,7 @@ export default function AdminScoreboard() {
               
               {/* First Place */}
               <div>
-                <Card className="bg-gradient-to-b from-yellow-500/20 to-neutral-900/50 border-yellow-500/30 text-center">
+                <Card className="bg-linear-to-b from-yellow-500/20 to-neutral-900/50 border-yellow-500/30 text-center">
                   <CardContent className="pt-6">
                     <div className="text-6xl mb-2">🥇</div>
                     <h3 className="text-xl font-bold text-white truncate">{teams[0].teamName}</h3>
@@ -146,13 +170,10 @@ export default function AdminScoreboard() {
 
           {/* Full Leaderboard Table */}
           <Card className="bg-neutral-900/50 border-neutral-800 overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border-b border-neutral-800">
-              <CardTitle className="text-xl text-white">Full Rankings</CardTitle>
-            </CardHeader>
             <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="min-w-full">
-                  <thead className="bg-neutral-800/50">
+                  <thead>
                     <tr>
                       <th className="px-6 py-4 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                         Rank

@@ -9,6 +9,7 @@ import SpotlightCard from '@/components/SpotlightCard';
 import { cn } from '@/lib/utils';
 import { toast, Toaster } from 'sonner';
 import { Badge } from '@/components/ui/badge';
+import { Trophy, TrendingUp } from 'lucide-react';
 
 
 interface ProblemStatement {
@@ -47,6 +48,7 @@ export default function UserDashboard() {
   const [totalScore, setTotalScore] = useState(0);
   const [problemStatements, setProblemStatements] = useState<ProblemStatement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showResultsToUsers, setShowResultsToUsers] = useState(false);
 
     const BottomGradient = () => {
     return (
@@ -66,7 +68,17 @@ export default function UserDashboard() {
     }
 
     fetchDashboard();
+    fetchSettings();
   }, [user, authLoading, router]);
+
+  const fetchSettings = async () => {
+    try {
+      const response = await api.get('/user/settings');
+      setShowResultsToUsers(response.data.showResultsToUsers || false);
+    } catch (error) {
+      console.error('Failed to fetch settings:', error);
+    }
+  };
 
   const fetchDashboard = async () => {
     try {
@@ -123,6 +135,26 @@ export default function UserDashboard() {
             <div className="flex items-center justify-between h-16">
               <h1 className="text-2xl font-bold text-white">SOC CTF Challenge</h1>
               <div className="flex items-center gap-4">
+                {showResultsToUsers && (
+                  <>
+                    <button
+                      onClick={() => router.push('/user/scoreboard')}
+                      className="relative px-4 py-2 text-sm rounded-md bg-yellow-500/20 font-medium text-yellow-400 border border-yellow-500/50 shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer flex items-center gap-2"
+                    >
+                      <Trophy className="w-4 h-4" />
+                      Scoreboard
+                      <BottomGradient />
+                    </button>
+                    <button
+                      onClick={() => router.push('/user/timeline')}
+                      className="relative px-4 py-2 text-sm rounded-md bg-blue-500/20 font-medium text-blue-400 border border-blue-500/50 shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer flex items-center gap-2"
+                    >
+                      <TrendingUp className="w-4 h-4" />
+                      Timeline
+                      <BottomGradient />
+                    </button>
+                  </>
+                )}
                 <button
                   onClick={logout}
                   className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
@@ -138,20 +170,25 @@ export default function UserDashboard() {
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Score Summary */}
-          <div className="mb-8 p-6 rounded-xl bg-linear-to-br from-neutral-900 to-neutral-800 border border-neutral-700">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <h2 className="text-3xl font-bold text-white mb-1">Welcome, {teamName}!</h2>
-                <p className="text-neutral-400">Complete CTF challenges to earn points</p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-neutral-400 mb-1">Total Score</p>
-                <p className="text-4xl font-bold bg-linear-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                  {totalScore}
-                </p>
+          <SpotlightCard
+            spotlightColor="rgba(34, 211, 238, 0.3)"
+            className="mb-8"
+          >
+            <div className="p-1 rounded-xl">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <h2 className="text-3xl font-bold text-white mb-1">Welcome, {teamName}!</h2>
+                  <p className="text-neutral-400">Complete CTF challenges to earn points</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-neutral-400 mb-1">Total Score</p>
+                  <p className="text-4xl font-bold bg-linear-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                    {totalScore}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          </SpotlightCard>
 
           <h2 className="text-2xl font-bold mb-6 text-white">Problem Statements</h2>
 
@@ -199,7 +236,7 @@ export default function UserDashboard() {
           </div>
 
           {/* Scoring Info */}
-          <div className="mt-8 p-6 rounded-xl bg-neutral-900/50 border border-neutral-800">
+          <div className="my-8 p-5 rounded-xl bg-neutral-900/50 border border-neutral-800">
             <h3 className="text-lg font-semibold text-white mb-3">Scoring System</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
               <div className="flex items-center gap-3">
@@ -231,6 +268,7 @@ export default function UserDashboard() {
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </>

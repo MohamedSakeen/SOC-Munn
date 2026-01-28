@@ -8,7 +8,7 @@ import { LoaderFive } from '@/components/ui/loader';
 import { toast, Toaster } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Trophy, Droplet, Check } from 'lucide-react';
+import { Trophy, Droplet, Check, Eye, EyeOff } from 'lucide-react';
 
 interface Team {
   teamId: string;
@@ -25,6 +25,8 @@ export default function AdminScoreboard() {
   const router = useRouter();
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showResultsToUsers, setShowResultsToUsers] = useState(false);
+  const [togglingVisibility, setTogglingVisibility] = useState(false);
 
   const BottomGradient = ({ color }: { color: 'red' | 'blue' | 'purple' | 'green' }) => {
     const colorMap = {
@@ -50,7 +52,32 @@ export default function AdminScoreboard() {
     }
 
     fetchScoreboard();
+    fetchSettings();
   }, [user, authLoading, router]);
+
+  const fetchSettings = async () => {
+    try {
+      const response = await api.get('/admin/settings');
+      setShowResultsToUsers(response.data.showResultsToUsers || false);
+    } catch (error) {
+      console.error('Failed to fetch settings:', error);
+    }
+  };
+
+  const toggleResultsVisibility = async () => {
+    setTogglingVisibility(true);
+    try {
+      const newValue = !showResultsToUsers;
+      await api.put('/admin/settings', { showResultsToUsers: newValue });
+      setShowResultsToUsers(newValue);
+      toast.success(newValue ? 'Results are now visible to users' : 'Results are now hidden from users');
+    } catch (error) {
+      console.error('Failed to toggle visibility:', error);
+      toast.error('Failed to update settings');
+    } finally {
+      setTogglingVisibility(false);
+    }
+  };
 
   const fetchScoreboard = async () => {
     try {
@@ -92,6 +119,23 @@ export default function AdminScoreboard() {
                 Leaderboard
               </h1>
               <div className="flex items-center gap-3">
+                <button
+                  onClick={toggleResultsVisibility}
+                  disabled={togglingVisibility}
+                  className={cn(
+                    "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer flex items-center gap-2",
+                    showResultsToUsers 
+                      ? "bg-green-500/20 text-green-400 border border-green-500/50" 
+                      : "bg-neutral-800/50 text-white"
+                  )}
+                >
+                  {showResultsToUsers ? (
+                    <><Eye className="w-4 h-4" /> Visible to Users</>
+                  ) : (
+                    <><EyeOff className="w-4 h-4" /> Hidden from Users</>
+                  )}
+                  <BottomGradient color="green" />
+                </button>
                 <button
                   onClick={() => router.push('/admin/timeline')}
                   className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"

@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { Check, X, Trophy, Droplet, ChevronDown, ChevronUp } from 'lucide-react';
+import { Check, X, Trophy, Droplet, ChevronDown, ChevronUp, Eye, EyeOff, Play, Pause } from 'lucide-react';
 import {
   Collapsible,
   CollapsibleContent,
@@ -47,6 +47,10 @@ export default function AdminSubmissions() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [expandedTeam, setExpandedTeam] = useState<string | null>(null);
+  const [showResultsToUsers, setShowResultsToUsers] = useState(false);
+  const [togglingVisibility, setTogglingVisibility] = useState(false);
+  const [allowPSAccess, setAllowPSAccess] = useState(false);
+  const [togglingChallenge, setTogglingChallenge] = useState(false);
 
   const BottomGradient = ({ color }: { color: 'red' | 'amber' | 'green' | 'purple' }) => {
     const colorMap = {
@@ -72,7 +76,48 @@ export default function AdminSubmissions() {
     }
 
     fetchSubmissions();
+    fetchSettings();
   }, [user, authLoading, router]);
+
+  const fetchSettings = async () => {
+    try {
+      const response = await api.get('/admin/settings');
+      setShowResultsToUsers(response.data.showResultsToUsers || false);
+      setAllowPSAccess(response.data.allowPSAccess || false);
+    } catch (error) {
+      console.error('Failed to fetch settings:', error);
+    }
+  };
+
+  const toggleResultsVisibility = async () => {
+    setTogglingVisibility(true);
+    try {
+      const newValue = !showResultsToUsers;
+      await api.put('/admin/settings', { showResultsToUsers: newValue });
+      setShowResultsToUsers(newValue);
+      toast.success(newValue ? 'Results are now visible to users' : 'Results are now hidden from users');
+    } catch (error) {
+      console.error('Failed to toggle visibility:', error);
+      toast.error('Failed to update settings');
+    } finally {
+      setTogglingVisibility(false);
+    }
+  };
+
+  const toggleChallengeAccess = async () => {
+    setTogglingChallenge(true);
+    try {
+      const newValue = !allowPSAccess;
+      await api.put('/admin/settings', { allowPSAccess: newValue });
+      setAllowPSAccess(newValue);
+      toast.success(newValue ? 'Challenge has started! Users can now access problem statements.' : 'Challenge paused. Users cannot access problem statements.');
+    } catch (error) {
+      console.error('Failed to toggle challenge access:', error);
+      toast.error('Failed to update settings');
+    } finally {
+      setTogglingChallenge(false);
+    }
+  };
 
   const fetchSubmissions = async () => {
     try {
@@ -157,6 +202,40 @@ export default function AdminSubmissions() {
             <div className="flex items-center justify-between h-16">
               <h1 className="text-2xl font-bold text-white">Submissions & Progress</h1>
               <div className="flex items-center gap-3">
+                <button
+                  onClick={toggleChallengeAccess}
+                  disabled={togglingChallenge}
+                  className={cn(
+                    "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer flex items-center gap-2",
+                    allowPSAccess 
+                      ? "bg-amber-500/20 text-amber-400 border border-amber-500/50" 
+                      : "bg-neutral-800/50 text-white"
+                  )}
+                >
+                  {allowPSAccess ? (
+                    <><Play className="w-4 h-4" /> Challenge Started</>
+                  ) : (
+                    <><Pause className="w-4 h-4" /> Challenge Paused</>
+                  )}
+                  <BottomGradient color="amber" />
+                </button>
+                <button
+                  onClick={toggleResultsVisibility}
+                  disabled={togglingVisibility}
+                  className={cn(
+                    "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer flex items-center gap-2",
+                    showResultsToUsers 
+                      ? "bg-green-500/20 text-green-400 border border-green-500/50" 
+                      : "bg-neutral-800/50 text-white"
+                  )}
+                >
+                  {showResultsToUsers ? (
+                    <><Eye className="w-4 h-4" /> Visible to Users</>
+                  ) : (
+                    <><EyeOff className="w-4 h-4" /> Hidden from Users</>
+                  )}
+                  <BottomGradient color="green" />
+                </button>
                 <button
                   onClick={() => router.push('/admin/scoreboard')}
                   className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"

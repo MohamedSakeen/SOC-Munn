@@ -76,7 +76,7 @@ export default function LoginPage() {
   // Handle redirect if user is already logged in
   useEffect(() => {
     if (!authLoading && user) {
-      router.push(user.role === 'admin' ? '/admin/submissions' : '/user/dashboard');
+      router.push(user.role === 'admin' ? '/admin/submissions' : '/user/rules');
     }
   }, [user, authLoading, router]);
 

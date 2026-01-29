@@ -12,7 +12,7 @@ import { ParticlesBackground } from '@/components/ui/particles-background';
 import { cn } from '@/lib/utils';
 import { toast, Toaster } from 'sonner';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, TrendingUp, Lock, FileText } from 'lucide-react';
+import { Trophy, TrendingUp, Lock, FileText, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 
@@ -154,6 +154,13 @@ export default function UserDashboard() {
                 <h1 className="text-xl font-bold text-white font-mono tracking-wide">SOC OPERATIONS</h1>
               </div>
               <div className="flex items-center gap-4">
+                <button
+                  onClick={() => router.push('/user/rules')}
+                  className="relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-neutral-300 border border-neutral-700/50 transition-all cursor-pointer flex items-center gap-2 font-mono hover:border-amber-500/50 hover:text-amber-400"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  RULES
+                </button>
                 {showResultsToUsers && (
                   <>
                     <button

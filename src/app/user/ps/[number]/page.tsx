@@ -227,10 +227,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
         onClose={() => setShowCaseClosed(false)}
       />
 
-      <NoirBackground variant="scanlines">
-        {/* Particles */}
-        <ParticlesBackground variant="dust" className="fixed inset-0 pointer-events-none opacity-50" />
-        
+      <div className="min-h-screen bg-black">
         {/* Header */}
         <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-800/50 rounded-b-3xl">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -270,20 +267,18 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
               animate={{ opacity: 1, x: 0 }}
               className="lg:col-span-2"
             >
-              <Card className="bg-neutral-900/50 border-amber-900/30 backdrop-blur-sm h-fit lg:sticky lg:top-24">
+              <Card className="bg-neutral-900/50 border-amber-900/30 backdrop-blur-sm lg:sticky lg:top-24">
                 <CardHeader className="border-b border-amber-900/30 pb-4">
                   <CardTitle className="text-lg text-amber-100 flex items-center gap-2 font-mono">
                     <span className="w-2 h-2 rounded-full bg-amber-400"></span>
                     CASE BRIEFING
                   </CardTitle>
                 </CardHeader>
-                <ScrollArea className="h-[calc(100vh-16rem)]">
-                  <CardContent className="py-4">
-                    <p className="text-neutral-300 whitespace-pre-wrap leading-relaxed text-sm">
-                      {ps.description}
-                    </p>
-                  </CardContent>
-                </ScrollArea>
+                <CardContent className="py-4">
+                  <p className="text-neutral-300 whitespace-pre-wrap leading-relaxed text-sm">
+                    {ps.description}
+                  </p>
+                </CardContent>
               </Card>
             </motion.div>
 
@@ -293,7 +288,6 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                 <HelpCircle className="w-5 h-5 text-amber-400" />
                 <h2 className="text-xl font-bold text-white font-mono">EVIDENCE QUESTIONS</h2>
               </div>
-              
               {ps.questions.map((question, index) => (
                 <motion.div
                   key={index}
@@ -410,7 +404,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
             </div>
           </div>
         </div>
-      </NoirBackground>
+      </div>
     </>
   );
 }

@@ -169,7 +169,7 @@ export default function AdminSubmissions() {
                   className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
                 >
                   Timeline
-                  <BottomGradient color="blue" />
+                  <BottomGradient color="purple" />
                 </button>
                 <button
                   onClick={async () => { setRefreshing(true); await fetchSubmissions(); setRefreshing(false); }}

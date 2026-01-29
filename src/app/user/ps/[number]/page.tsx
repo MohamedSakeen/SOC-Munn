@@ -17,7 +17,6 @@ import {
   ArrowLeft, 
   Check, 
   X, 
-  HelpCircle, 
   ChevronDown, 
   ChevronUp,
   Droplet,
@@ -60,7 +59,6 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
   const [answers, setAnswers] = useState<{ [key: number]: string }>({});
   const [submittingQuestion, setSubmittingQuestion] = useState<number | null>(null);
   const [openQuestion, setOpenQuestion] = useState<number | null>(0);
-  const [showHints, setShowHints] = useState<{ [key: number]: boolean }>({});
 
   const DashboardGradient = () => {
     return (
@@ -174,10 +172,6 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
     }
   };
 
-  const toggleHint = (index: number) => {
-    setShowHints(prev => ({ ...prev, [index]: !prev[index] }));
-  };
-
   const completedCount = ps?.questions.filter(q => q.isCompleted).length || 0;
   const totalQuestions = ps?.questions.length || 12;
 
@@ -267,12 +261,12 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                     openQuestion === index && "ring-1 ring-neutral-700"
                   )}>
                     <CollapsibleTrigger asChild>
-                      <CardHeader className="cursor-pointer transition-colors py-2">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
+                      <CardHeader className="cursor-pointer transition-colors py-3">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-start gap-3 flex-1 min-w-0">
                             {/* Question Number */}
                             <div className={cn(
-                              "w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold",
+                              "w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0",
                               question.isCompleted 
                                 ? "bg-green-500/20 text-green-400" 
                                 : "bg-neutral-800 text-neutral-400"
@@ -280,17 +274,22 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                               {question.isCompleted ? <Check className="w-4 h-4" /> : index + 1}
                             </div>
                             
-                            <div className="flex-1">
+                            <div className="flex-1 min-w-0 space-y-1">
                               <p className={cn(
-                                "text-sm font-medium line-clamp-1",
+                                "text-sm font-medium",
                                 question.isCompleted ? "text-green-400" : "text-white"
                               )}>
                                 {question.question}
                               </p>
+                              {question.hint && (
+                                <p className="text-xs text-yellow-200/70">
+                                  {question.hint}
+                                </p>
+                              )}
                             </div>
                           </div>
                           
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 flex-shrink-0">
                             {question.attempts > 0 && !question.isCompleted && (
                               <span className="text-xs text-neutral-500">{question.attempts} attempt{question.attempts > 1 ? 's' : ''}</span>
                             )}
@@ -306,27 +305,6 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                     
                     <CollapsibleContent>
                       <CardContent className="pt-0 pb-4 px-6 space-y-4">
-                        {/* Full Question */}
-                        <div className="p-4 bg-neutral-800/50 rounded-lg border border-neutral-700/50">
-                          <p className="text-neutral-200 text-sm">{question.question}</p>
-                        </div>
-
-                        {/* Hint Section */}
-                        <div>
-                          <button
-                            onClick={() => toggleHint(index)}
-                            className="flex items-center gap-2 text-sm text-neutral-400 hover:text-neutral-300 transition-colors"
-                          >
-                            <HelpCircle className="w-4 h-4" />
-                            {showHints[index] ? 'Hide Hint' : 'Show Hint'}
-                          </button>
-                          {showHints[index] && (
-                            <div className="mt-2 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-                              <p className="text-sm text-yellow-200">{question.hint}</p>
-                            </div>
-                          )}
-                        </div>
-
                         {/* Answer Input */}
                         {!question.isCompleted ? (
                           <div className="flex flex-col gap-3">

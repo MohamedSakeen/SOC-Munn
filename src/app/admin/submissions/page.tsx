@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import { LoaderFive } from '@/components/ui/loader';
+import { Spinner } from '@/components/ui/spinner';
 import { toast, Toaster } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -44,6 +45,7 @@ export default function AdminSubmissions() {
   const router = useRouter();
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [expandedTeam, setExpandedTeam] = useState<string | null>(null);
 
   const BottomGradient = ({ color }: { color: 'red' | 'blue' | 'green' | 'purple' }) => {
@@ -170,10 +172,11 @@ export default function AdminSubmissions() {
                   <BottomGradient color="blue" />
                 </button>
                 <button
-                  onClick={fetchSubmissions}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  onClick={async () => { setRefreshing(true); await fetchSubmissions(); setRefreshing(false); }}
+                  disabled={refreshing}
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer disabled:opacity-50 flex items-center gap-2"
                 >
-                  Refresh
+                  {refreshing ? <Spinner className="w-4 h-4" /> : 'Refresh'}
                   <BottomGradient color="purple" />
                 </button>
                 <button

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoaderFive } from '@/components/ui/loader';
+import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
 import { toast, Toaster } from 'sonner';
 
@@ -57,6 +58,7 @@ export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { login, user, loading: authLoading } = useAuth();
   const router = useRouter();
 
@@ -70,11 +72,14 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
     try {
       await login(username, password);
     } catch (err) {
       setError('Invalid credentials');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -132,9 +137,10 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="group/btn relative block h-10 w-full rounded-md bg-linear-to-br to-neutral-600 font-medium text-white bg-zinc-800 from-zinc-900 dark:to-zinc-900 shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset] cursor-pointer"
+            disabled={isLoading}
+            className="group/btn relative flex items-center justify-center h-10 w-full rounded-md bg-linear-to-br to-neutral-600 font-medium text-white bg-zinc-800 from-zinc-900 dark:to-zinc-900 shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Login →
+            {isLoading ? <Spinner className="w-5 h-5" /> : 'Login →'}
             <BottomGradient />
           </button>
         </form>

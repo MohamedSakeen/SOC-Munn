@@ -83,7 +83,8 @@ export default function UserTimeline() {
     } catch (error: any) {
       console.error('Failed to fetch timeline:', error);
       if (error.response?.status === 403) {
-        toast.error('Timeline is not available yet');
+        const message = error.response?.data?.message || 'Timeline is not available yet';
+        toast.error(message);
         router.push('/user/dashboard');
       } else {
         toast.error('Failed to load timeline data');

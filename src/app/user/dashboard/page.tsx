@@ -9,7 +9,7 @@ import SpotlightCard from '@/components/SpotlightCard';
 import { cn } from '@/lib/utils';
 import { toast, Toaster } from 'sonner';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, TrendingUp } from 'lucide-react';
+import { Trophy, TrendingUp, Lock } from 'lucide-react';
 
 
 interface ProblemStatement {
@@ -49,6 +49,7 @@ export default function UserDashboard() {
   const [problemStatements, setProblemStatements] = useState<ProblemStatement[]>([]);
   const [loading, setLoading] = useState(true);
   const [showResultsToUsers, setShowResultsToUsers] = useState(false);
+  const [allowPSAccess, setAllowPSAccess] = useState(false);
 
     const BottomGradient = () => {
     return (
@@ -75,6 +76,7 @@ export default function UserDashboard() {
     try {
       const response = await api.get('/user/settings');
       setShowResultsToUsers(response.data.showResultsToUsers || false);
+      setAllowPSAccess(response.data.allowPSAccess || false);
     } catch (error) {
       console.error('Failed to fetch settings:', error);
     }
@@ -95,6 +97,10 @@ export default function UserDashboard() {
   };
 
   const handleCardClick = (psNumber: number) => {
+    if (!allowPSAccess) {
+      toast.error('Challenge has not started yet. Please wait for admin to begin the event.');
+      return;
+    }
     router.push(`/user/ps/${psNumber}`);
   };
 
@@ -196,8 +202,11 @@ export default function UserDashboard() {
             {problemStatements.map((ps) => (
               <SpotlightCard
                 key={ps.psNumber}
-                spotlightColor={getSpotlightColor(ps.completedQuestions, ps.totalQuestions)}
-                className="cursor-pointer transition-all duration-300 hover:scale-[1.02]"
+                spotlightColor={allowPSAccess ? getSpotlightColor(ps.completedQuestions, ps.totalQuestions) : 'rgba(100, 100, 100, 0.1)'}
+                className={cn(
+                  "transition-all duration-300",
+                  allowPSAccess ? "cursor-pointer hover:scale-[1.02]" : "cursor-not-allowed opacity-70"
+                )}
               >
                 <div onClick={() => handleCardClick(ps.psNumber)} className="p-1">
                   <div className="flex items-start justify-between mb-3">
@@ -205,11 +214,16 @@ export default function UserDashboard() {
                       <p className="text-xs text-neutral-500 mb-1">PS {ps.psNumber}</p>
                       <h3 className="text-lg font-bold text-white leading-tight">{ps.title}</h3>
                     </div>
-                    {ps.completedQuestions === ps.totalQuestions && (
+                    {!allowPSAccess ? (
+                      <div className="flex items-center gap-1 px-2 py-1 bg-neutral-800 rounded-md">
+                        <Lock className="w-3 h-3 text-neutral-400" />
+                        <span className="text-xs text-neutral-400">Locked</span>
+                      </div>
+                    ) : ps.completedQuestions === ps.totalQuestions ? (
                       <Badge className="bg-green-500/20 text-green-400 border-green-500/50">
                         Complete
                       </Badge>
-                    )}
+                    ) : null}
                   </div>
                   
                   {/* Progress Bar */}

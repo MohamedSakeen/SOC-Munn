@@ -58,7 +58,8 @@ export default function UserScoreboard() {
     } catch (error: any) {
       console.error('Failed to fetch scoreboard:', error);
       if (error.response?.status === 403) {
-        toast.error('Scoreboard is not available yet');
+        const message = error.response?.data?.message || 'Scoreboard is not available yet';
+        toast.error(message);
         router.push('/user/dashboard');
       } else {
         toast.error('Failed to load scoreboard data');

@@ -7,10 +7,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import { LoaderFive } from '@/components/ui/loader';
+import { Spinner } from '@/components/ui/spinner';
 import { toast, Toaster } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { TrendingUp, Eye, EyeOff} from 'lucide-react';
+import { TrendingUp, Eye, EyeOff, Play, Pause } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface TimelineEvent {
@@ -45,10 +46,13 @@ export default function AdminTimeline() {
   const router = useRouter();
   const [teamsTimeline, setTeamsTimeline] = useState<TeamTimeline[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedTeams, setSelectedTeams] = useState<Set<string>>(new Set());
   const [chartData, setChartData] = useState<any[]>([]);
   const [showResultsToUsers, setShowResultsToUsers] = useState(false);
   const [togglingVisibility, setTogglingVisibility] = useState(false);
+  const [allowPSAccess, setAllowPSAccess] = useState(false);
+  const [togglingChallenge, setTogglingChallenge] = useState(false);
 
   const BottomGradient = ({ color }: { color: 'red' | 'blue' | 'purple' | 'green' }) => {
     const colorMap = {
@@ -87,6 +91,7 @@ export default function AdminTimeline() {
     try {
       const response = await api.get('/admin/settings');
       setShowResultsToUsers(response.data.showResultsToUsers || false);
+      setAllowPSAccess(response.data.allowPSAccess || false);
     } catch (error) {
       console.error('Failed to fetch settings:', error);
     }
@@ -104,6 +109,21 @@ export default function AdminTimeline() {
       toast.error('Failed to update settings');
     } finally {
       setTogglingVisibility(false);
+    }
+  };
+
+  const toggleChallengeAccess = async () => {
+    setTogglingChallenge(true);
+    try {
+      const newValue = !allowPSAccess;
+      await api.put('/admin/settings', { allowPSAccess: newValue });
+      setAllowPSAccess(newValue);
+      toast.success(newValue ? 'Challenge has started! Users can now access problem statements.' : 'Challenge paused. Users cannot access problem statements.');
+    } catch (error) {
+      console.error('Failed to toggle challenge access:', error);
+      toast.error('Failed to update settings');
+    } finally {
+      setTogglingChallenge(false);
     }
   };
 
@@ -214,6 +234,23 @@ export default function AdminTimeline() {
               </h1>
               <div className="flex items-center gap-3">
                 <button
+                  onClick={toggleChallengeAccess}
+                  disabled={togglingChallenge}
+                  className={cn(
+                    "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer flex items-center gap-2",
+                    allowPSAccess 
+                      ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/50" 
+                      : "bg-neutral-800/50 text-white"
+                  )}
+                >
+                  {allowPSAccess ? (
+                    <><Play className="w-4 h-4" /> Challenge Started</>
+                  ) : (
+                    <><Pause className="w-4 h-4" /> Challenge Paused</>
+                  )}
+                  <BottomGradient color="blue" />
+                </button>
+                <button
                   onClick={toggleResultsVisibility}
                   disabled={togglingVisibility}
                   className={cn(
@@ -245,10 +282,11 @@ export default function AdminTimeline() {
                   <BottomGradient color="purple" />
                 </button>
                 <button
-                  onClick={fetchTimeline}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  onClick={async () => { setRefreshing(true); await fetchTimeline(); setRefreshing(false); }}
+                  disabled={refreshing}
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer disabled:opacity-50 flex items-center gap-2"
                 >
-                  Refresh
+                  {refreshing ? <Spinner className="w-4 h-4" /> : 'Refresh'}
                   <BottomGradient color="blue" />
                 </button>
                 <button

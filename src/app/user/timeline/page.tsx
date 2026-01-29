@@ -9,6 +9,8 @@ import api from '@/lib/api';
 import { LoaderFive } from '@/components/ui/loader';
 import { toast, Toaster } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { NoirBackground } from '@/components/ui/noir-background';
+import { ParticlesBackground } from '@/components/ui/particles-background';
 import { cn } from '@/lib/utils';
 import { TrendingUp, Trophy, ArrowLeft } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
@@ -43,10 +45,10 @@ export default function UserTimeline() {
   const [selectedTeams, setSelectedTeams] = useState<Set<string>>(new Set());
   const [chartData, setChartData] = useState<any[]>([]);
 
-  const BottomGradient = ({ color }: { color: 'red' | 'blue' | 'purple' | 'green' }) => {
+  const BottomGradient = ({ color }: { color: 'red' | 'amber' | 'purple' | 'green' }) => {
     const colorMap = {
       red: 'via-red-500',
-      blue: 'via-blue-500',
+      amber: 'via-amber-500',
       purple: 'via-purple-500',
       green: 'via-green-500'
     };
@@ -167,30 +169,32 @@ export default function UserTimeline() {
   return (
     <>
       <Toaster position="top-right" theme="dark" richColors />
-      <div className="min-h-screen bg-black">
+      <NoirBackground variant="grid">
+        <ParticlesBackground variant="dust" className="fixed inset-0 pointer-events-none opacity-50" />
+        
         {/* Header */}
-        <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-md border-b rounded-b-3xl border-neutral-800">
+        <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-800/50 rounded-b-3xl">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                <TrendingUp className="w-6 h-6 text-blue-400" />
-                Score Timeline
+              <h1 className="text-xl font-bold text-white flex items-center gap-2 font-mono">
+                <TrendingUp className="w-6 h-6 text-amber-400" />
+                MISSION INTEL
               </h1>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => router.push('/user/scoreboard')}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
                 >
                   <Trophy className="w-4 h-4 inline mr-2" />
-                  Scoreboard
+                  RANKINGS
                   <BottomGradient color="green" />
                 </button>
                 <button
                   onClick={() => router.push('/user/dashboard')}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
                 >
                   <ArrowLeft className="w-4 h-4 inline mr-2" />
-                  Dashboard
+                  BACK
                   <BottomGradient color="purple" />
                 </button>
                 <button
@@ -295,7 +299,7 @@ export default function UserTimeline() {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </NoirBackground>
     </>
   );
 }

@@ -48,10 +48,10 @@ export default function AdminSubmissions() {
   const [refreshing, setRefreshing] = useState(false);
   const [expandedTeam, setExpandedTeam] = useState<string | null>(null);
 
-  const BottomGradient = ({ color }: { color: 'red' | 'blue' | 'green' | 'purple' }) => {
+  const BottomGradient = ({ color }: { color: 'red' | 'amber' | 'green' | 'purple' }) => {
     const colorMap = {
       red: 'via-red-500',
-      blue: 'via-blue-500',
+      amber: 'via-amber-500',
       green: 'via-green-500',
       purple: 'via-purple-500'
     };
@@ -245,7 +245,7 @@ export default function AdminSubmissions() {
                             </div>
                             <div className="text-center">
                               <p className="text-neutral-400">Score</p>
-                              <p className="text-cyan-400 font-bold">{team.totalScore}</p>
+                              <p className="text-amber-400 font-bold">{team.totalScore}</p>
                             </div>
                           </div>
                           

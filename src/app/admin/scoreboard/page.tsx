@@ -32,10 +32,10 @@ export default function AdminScoreboard() {
   const [allowPSAccess, setAllowPSAccess] = useState(false);
   const [togglingChallenge, setTogglingChallenge] = useState(false);
 
-  const BottomGradient = ({ color }: { color: 'red' | 'blue' | 'purple' | 'green' }) => {
+  const BottomGradient = ({ color }: { color: 'red' | 'amber' | 'purple' | 'green' }) => {
     const colorMap = {
       red: 'via-red-500',
-      blue: 'via-blue-500',
+      amber: 'via-amber-500',
       purple: 'via-purple-500',
       green: 'via-green-500'
     };
@@ -145,7 +145,7 @@ export default function AdminScoreboard() {
                   className={cn(
                     "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer flex items-center gap-2",
                     allowPSAccess 
-                      ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/50" 
+                      ? "bg-amber-500/20 text-amber-400 border border-amber-500/50" 
                       : "bg-neutral-800/50 text-white"
                   )}
                 >
@@ -154,7 +154,7 @@ export default function AdminScoreboard() {
                   ) : (
                     <><Pause className="w-4 h-4" /> Challenge Paused</>
                   )}
-                  <BottomGradient color="blue" />
+                  <BottomGradient color="amber" />
                 </button>
                 <button
                   onClick={toggleResultsVisibility}
@@ -317,7 +317,7 @@ export default function AdminScoreboard() {
                               index === 0 ? "text-yellow-400" :
                               index === 1 ? "text-neutral-300" :
                               index === 2 ? "text-orange-400" :
-                              "text-cyan-400"
+                              "text-amber-400"
                             )}>
                               {team.totalScore}
                             </span>

@@ -12,7 +12,20 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Input } from '@/components/ui/input';
+import { NoirBackground } from '@/components/ui/noir-background';
+import { ParticlesBackground } from '@/components/ui/particles-background';
+import { 
+  detectiveQuotes, 
+  firstBloodQuotes, 
+  wrongAnswerQuotes,
+  caseClosedQuotes,
+  getRandomQuote,
+  triggerCelebration,
+  CaseClosedOverlay,
+  MissionCompleteOverlay
+} from '@/components/ui/detective-easter-eggs';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 import { 
   ArrowLeft, 
   Check, 
@@ -20,14 +33,15 @@ import {
   ChevronDown, 
   ChevronUp,
   Droplet,
-  Trophy
+  Trophy,
+  FileText,
+  HelpCircle
 } from 'lucide-react';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-import confetti from 'canvas-confetti';
 
 
 interface Question {
@@ -59,12 +73,14 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
   const [answers, setAnswers] = useState<{ [key: number]: string }>({});
   const [submittingQuestion, setSubmittingQuestion] = useState<number | null>(null);
   const [openQuestion, setOpenQuestion] = useState<number | null>(0);
+  const [showCaseClosed, setShowCaseClosed] = useState(false);
+  const [caseClosedMessage, setCaseClosedMessage] = useState('');
 
   const DashboardGradient = () => {
     return (
       <>
-        <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-linear-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
-        <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-linear-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+        <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-linear-to-r from-transparent via-amber-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+        <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-linear-to-r from-transparent via-amber-600 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
       </>
     );
   };
@@ -110,14 +126,6 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
     }
   };
 
-  const triggerConfetti = () => {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 }
-    });
-  };
-
   const handleSubmitAnswer = async (questionIndex: number) => {
     const answer = answers[questionIndex]?.trim();
     if (!answer) {
@@ -140,6 +148,18 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
           attempts: response.data.attempts,
           isFirstBlood: response.data.isFirstBlood
         };
+        
+        // Check if all questions are now completed
+        const allCompleted = updatedQuestions.every(q => q.isCompleted);
+        if (allCompleted && response.data.isCorrect) {
+          // Show case closed overlay
+          setTimeout(() => {
+            setCaseClosedMessage(getRandomQuote(caseClosedQuotes));
+            setShowCaseClosed(true);
+            triggerCelebration('caseClosed');
+          }, 500);
+        }
+        
         return {
           ...prev,
           questions: updatedQuestions,
@@ -148,16 +168,21 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
       });
 
       if (response.data.isCorrect) {
-        // Trigger confetti on correct answer
-        triggerConfetti();
-        toast.success(response.data.message);
+        // Use detective quotes for correct answers
+        if (response.data.isFirstBlood) {
+          triggerCelebration('firstBlood');
+          toast.success(getRandomQuote(firstBloodQuotes));
+        } else {
+          triggerCelebration('correct');
+          toast.success(getRandomQuote(detectiveQuotes));
+        }
         // Move to next unanswered question
         const nextUnanswered = ps?.questions.findIndex((q, i) => i > questionIndex && !q.isCompleted);
         if (nextUnanswered !== undefined && nextUnanswered >= 0) {
           setOpenQuestion(nextUnanswered);
         }
       } else {
-        toast.error(response.data.message);
+        toast.error(getRandomQuote(wrongAnswerQuotes));
       }
       
       // Clear the answer field
@@ -194,29 +219,41 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
   return (
     <>
       <Toaster position="top-right" theme="dark" richColors />
-      <div className="min-h-screen bg-black">
+      
+      {/* Case Closed Overlay */}
+      <CaseClosedOverlay 
+        show={showCaseClosed} 
+        message={caseClosedMessage}
+        onClose={() => setShowCaseClosed(false)}
+      />
+
+      <NoirBackground variant="scanlines">
+        {/* Particles */}
+        <ParticlesBackground variant="dust" className="fixed inset-0 pointer-events-none opacity-50" />
+        
         {/* Header */}
         <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-800/50 rounded-b-3xl">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center gap-4">
+                <FileText className="w-5 h-5 text-amber-500" />
                 <div>
-                  <h1 className="text-lg font-semibold text-white">{ps.title}</h1>
-                  <p className="text-xs text-neutral-500">Problem Statement {psNumber}</p>
+                  <h1 className="text-lg font-semibold text-white font-mono">{ps.title}</h1>
+                  <p className="text-xs text-amber-500/70 font-mono">CASE FILE #{String(psNumber).padStart(3, '0')}</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-3 px-4 py-2 bg-neutral-800/50 border border-neutral-700/50 rounded-xl group/btn relative text-sm font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer">
+                <div className="flex items-center gap-3 px-4 py-2 bg-neutral-800/50 border border-neutral-700/50 rounded-xl text-sm font-medium font-mono">
                   <Trophy className="w-4 h-4 text-yellow-400" />
-                  <span className="text-sm text-white font-medium">{completedCount}/{totalQuestions}</span>
+                  <span className="text-white">{completedCount}/{totalQuestions}</span>
                 </div>
                 <button
                   onClick={() => router.push('/user/dashboard')}
-                  className="group/btn flex items-center rounded-xl gap-2 relative px-4 py-3 text-sm bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn flex items-center rounded-xl gap-2 relative px-4 py-3 text-sm bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  <span className="text-sm font-medium">Back to Dashboard</span>
+                  <span className="text-sm font-medium">BACK</span>
                   <DashboardGradient />
                 </button>
               </div>
@@ -225,32 +262,46 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
         </nav>
 
         {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
             {/* Problem Description - Left Side */}
-            <Card className="lg:col-span-2 bg-neutral-900/50 border-neutral-800/50 backdrop-blur-sm h-fit lg:sticky lg:top-24">
-              <CardHeader className="border-b border-neutral-800/50 pb-4">
-                <CardTitle className="text-lg text-white flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-blue-400"></span>
-                  Scenario
-                </CardTitle>
-              </CardHeader>
-              <ScrollArea className="h-[calc(100vh-16rem)]">
-                <CardContent className="py-4">
-                  <p className="text-neutral-300 whitespace-pre-wrap leading-relaxed text-sm">
-                    {ps.description}
-                  </p>
-                </CardContent>
-              </ScrollArea>
-            </Card>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="lg:col-span-2"
+            >
+              <Card className="bg-neutral-900/50 border-amber-900/30 backdrop-blur-sm h-fit lg:sticky lg:top-24">
+                <CardHeader className="border-b border-amber-900/30 pb-4">
+                  <CardTitle className="text-lg text-amber-100 flex items-center gap-2 font-mono">
+                    <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+                    CASE BRIEFING
+                  </CardTitle>
+                </CardHeader>
+                <ScrollArea className="h-[calc(100vh-16rem)]">
+                  <CardContent className="py-4">
+                    <p className="text-neutral-300 whitespace-pre-wrap leading-relaxed text-sm">
+                      {ps.description}
+                    </p>
+                  </CardContent>
+                </ScrollArea>
+              </Card>
+            </motion.div>
 
             {/* Questions - Right Side */}
             <div className="lg:col-span-3 space-y-3">
-              <h2 className="text-xl font-bold text-white mb-4">Questions</h2>
+              <div className="flex items-center gap-2 mb-4">
+                <HelpCircle className="w-5 h-5 text-amber-400" />
+                <h2 className="text-xl font-bold text-white font-mono">EVIDENCE QUESTIONS</h2>
+              </div>
               
               {ps.questions.map((question, index) => (
-                <Collapsible
+                <motion.div
                   key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                <Collapsible
                   open={openQuestion === index}
                   onOpenChange={(open) => setOpenQuestion(open ? index : null)}
                 >
@@ -258,7 +309,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                     "bg-neutral-900/50 border-neutral-800/50 backdrop-blur-sm transition-all duration-200",
                     openQuestion !== index && "hover:bg-neutral-700/30",
                     question.isCompleted && "border-green-500/30 bg-green-900/10",
-                    openQuestion === index && "ring-1 ring-neutral-700"
+                    openQuestion === index && "ring-1 ring-amber-500/30"
                   )}>
                     <CollapsibleTrigger asChild>
                       <CardHeader className="cursor-pointer transition-colors py-3">
@@ -312,7 +363,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                               value={answers[index] || ''}
                               onChange={(e) => setAnswers(prev => ({ ...prev, [index]: e.target.value }))}
                               placeholder={question.placeholder}
-                              className="w-full bg-neutral-800/50 border-neutral-700 text-white placeholder:text-neutral-500 focus-visible:ring-cyan-500 h-11"
+                              className="w-full bg-neutral-800/50 border-neutral-700 text-white placeholder:text-neutral-500 focus-visible:ring-amber-500 h-11"
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter' && !submittingQuestion) {
                                   handleSubmitAnswer(index);
@@ -343,7 +394,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
 
                         {/* Attempts and Score Info */}
                         {question.attempts > 0 && !question.isCompleted && (
-                          <div className="flex items-center justify-between text-xs text-neutral-500">
+                          <div className="flex items-center justify-between text-xs text-neutral-500 font-mono">
                             <span>{question.attempts} attempt{question.attempts > 1 ? 's' : ''}</span>
                             {question.score < 0 && (
                               <span className="text-red-400">Penalty: {question.score} pts</span>
@@ -354,11 +405,12 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                     </CollapsibleContent>
                   </Card>
                 </Collapsible>
+                </motion.div>
               ))}
             </div>
           </div>
         </div>
-      </div>
+      </NoirBackground>
     </>
   );
 }

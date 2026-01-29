@@ -7,8 +7,11 @@ import api from '@/lib/api';
 import { LoaderFive } from '@/components/ui/loader';
 import { toast, Toaster } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { NoirBackground } from '@/components/ui/noir-background';
+import { ParticlesBackground } from '@/components/ui/particles-background';
 import { cn } from '@/lib/utils';
-import { Trophy, Droplet, Check, ArrowLeft, TrendingUp } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Trophy, Droplet, Check, ArrowLeft, TrendingUp, Shield } from 'lucide-react';
 
 interface Team {
   teamId: string;
@@ -87,37 +90,39 @@ export default function UserScoreboard() {
   return (
     <>
       <Toaster position="top-right" theme="dark" richColors />
-      <div className="min-h-screen bg-black">
+      <NoirBackground variant="grid">
+        <ParticlesBackground variant="dust" className="fixed inset-0 pointer-events-none opacity-50" />
+        
         {/* Header */}
-        <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-md border-b border-neutral-800">
+        <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-800/50 rounded-b-3xl">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+              <h1 className="text-xl font-bold text-white flex items-center gap-2 font-mono">
                 <Trophy className="w-6 h-6 text-yellow-400" />
-                Leaderboard
+                AGENT RANKINGS
               </h1>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => router.push('/user/timeline')}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
                 >
                   <TrendingUp className="w-4 h-4 inline mr-2" />
-                  Timeline
+                  INTEL
                   <BottomGradient color="blue" />
                 </button>
                 <button
                   onClick={() => router.push('/user/dashboard')}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
                 >
                   <ArrowLeft className="w-4 h-4 inline mr-2" />
-                  Dashboard
+                  BACK
                   <BottomGradient color="purple" />
                 </button>
                 <button
                   onClick={logout}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
                 >
-                  Logout
+                  LOGOUT
                   <BottomGradient color="red" />
                 </button>
               </div>
@@ -126,7 +131,7 @@ export default function UserScoreboard() {
         </nav>
 
         {/* Main Content */}
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
           {/* Stats Summary - Individual Team Stats */}
           {(() => {
             const myTeam = teams.find(t => t.teamName === user?.teamName);
@@ -208,7 +213,7 @@ export default function UserScoreboard() {
                           key={team.teamId} 
                           className={cn(
                             "border-b border-neutral-800/50 transition-colors",
-                            isCurrentTeam ? "bg-cyan-500/10" : "hover:bg-neutral-800/30"
+                            isCurrentTeam ? "bg-amber-500/10" : "hover:bg-neutral-800/30"
                           )}
                         >
                           <td className="py-4 px-4">
@@ -223,10 +228,10 @@ export default function UserScoreboard() {
                             <div>
                               <p className={cn(
                                 "font-semibold",
-                                isCurrentTeam ? "text-cyan-400" : "text-white"
+                                isCurrentTeam ? "text-amber-400" : "text-white"
                               )}>
                                 {team.teamName}
-                                {isCurrentTeam && <span className="ml-2 text-xs text-cyan-400">(You)</span>}
+                                {isCurrentTeam && <span className="ml-2 text-xs text-amber-400">(You)</span>}
                               </p>
                               <p className="text-xs text-neutral-500">
                                 {team.teamMembers?.slice(0, 2).join(', ')}
@@ -259,7 +264,7 @@ export default function UserScoreboard() {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </NoirBackground>
     </>
   );
 }

@@ -51,44 +51,47 @@ export const LoaderOne = () => {
 export const LoaderTwo = () => {
   const transition = (x: number) => {
     return {
-      duration: 2,
+      duration: 1.5,
       repeat: Infinity,
       repeatType: "loop" as const,
-      delay: x * 0.2,
+      delay: x * 0.15,
       ease: "easeInOut",
     };
   };
   return (
-    <div className="flex items-center">
+    <div className="flex items-center gap-2">
       <motion.div
         transition={transition(0)}
         initial={{
-          x: 0,
+          scale: 1,
         }}
         animate={{
-          x: [0, 20, 0],
+          scale: [1, 1.3, 1],
+          opacity: [0.5, 1, 0.5],
         }}
-        className="h-4 w-4 rounded-full bg-neutral-200 shadow-md dark:bg-neutral-500"
+        className="h-4 w-4 rounded-full bg-amber-500 shadow-md shadow-amber-500/50"
       />
       <motion.div
         initial={{
-          x: 0,
+          scale: 1,
         }}
         animate={{
-          x: [0, 20, 0],
+          scale: [1, 1.3, 1],
+          opacity: [0.5, 1, 0.5],
         }}
-        transition={transition(0.4)}
-        className="h-4 w-4 -translate-x-2 rounded-full bg-neutral-200 shadow-md dark:bg-neutral-500"
+        transition={transition(1)}
+        className="h-4 w-4 rounded-full bg-amber-500 shadow-md shadow-amber-500/50"
       />
       <motion.div
         initial={{
-          x: 0,
+          scale: 1,
         }}
         animate={{
-          x: [0, 20, 0],
+          scale: [1, 1.3, 1],
+          opacity: [0.5, 1, 0.5],
         }}
-        transition={transition(0.8)}
-        className="h-4 w-4 -translate-x-4 rounded-full bg-neutral-200 shadow-md dark:bg-neutral-500"
+        transition={transition(2)}
+        className="h-4 w-4 rounded-full bg-amber-500 shadow-md shadow-amber-500/50"
       />
     </div>
   );

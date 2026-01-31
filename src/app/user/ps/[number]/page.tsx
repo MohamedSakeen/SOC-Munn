@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import api from '@/lib/api';
-import { LoaderFive } from '@/components/ui/loader';
+import { LoaderTwo } from '@/components/ui/loader';
 import { toast, Toaster } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -14,6 +14,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Input } from '@/components/ui/input';
 import { NoirBackground } from '@/components/ui/noir-background';
 import { ParticlesBackground } from '@/components/ui/particles-background';
+import { NoirDecorations } from '@/components/ui/noir-decorations';
 import { 
   detectiveQuotes, 
   firstBloodQuotes, 
@@ -35,7 +36,8 @@ import {
   Droplet,
   Trophy,
   FileText,
-  HelpCircle
+  HelpCircle,
+  ExternalLink
 } from 'lucide-react';
 import {
   Collapsible,
@@ -60,6 +62,7 @@ interface PSData {
   psNumber: number;
   title: string;
   description: string;
+  link?: string;
   questions: Question[];
   totalScore: number;
 }
@@ -89,6 +92,14 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
       <>
         <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-linear-to-r from-transparent via-green-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
         <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-linear-to-r from-transparent via-green-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+      </>
+    );
+  };
+    const LinkGradient = () => {
+    return (
+      <>
+        <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-linear-to-r from-transparent via-purple-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+        <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-linear-to-r from-transparent via-purple-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
       </>
     );
   };
@@ -203,7 +214,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
   if (loading || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
-        <LoaderFive text="Loading" />
+        <LoaderTwo />
       </div>
     );
   }
@@ -227,7 +238,13 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
         onClose={() => setShowCaseClosed(false)}
       />
 
-      <div className="min-h-screen bg-black">
+      <NoirBackground variant="scanlines">
+        {/* Particles */}
+        <ParticlesBackground variant="dust" className="fixed inset-0 pointer-events-none" />
+        
+        {/* Noir decorations */}
+        <NoirDecorations />
+
         {/* Header */}
         <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-800/50 rounded-b-3xl">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -236,7 +253,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                 <FileText className="w-5 h-5 text-amber-500" />
                 <div>
                   <h1 className="text-lg font-semibold text-white font-mono">{ps.title}</h1>
-                  <p className="text-xs text-amber-500/70 font-mono">CASE FILE #{String(psNumber).padStart(3, '0')}</p>
+                  <p className="text-xs text-amber-500/70 font-mono">ALLOT {String(psNumber).padStart(3, '0')}</p>
                 </div>
               </div>
               
@@ -270,7 +287,6 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
               <Card className="bg-neutral-900/50 border-amber-900/30 backdrop-blur-sm lg:sticky lg:top-24">
                 <CardHeader className="border-b border-amber-900/30 pb-4">
                   <CardTitle className="text-lg text-amber-100 flex items-center gap-2 font-mono">
-                    <span className="w-2 h-2 rounded-full bg-amber-400"></span>
                     CASE BRIEFING
                   </CardTitle>
                 </CardHeader>
@@ -278,6 +294,19 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                   <p className="text-neutral-300 whitespace-pre-wrap leading-relaxed text-sm">
                     {ps.description}
                   </p>
+                  
+                  {ps.link && (
+                    <a
+                      href={ps.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/btn mt-4 inline-flex items-center gap-2 px-4 py-2 bg-neutral-800/50 hover:bg-neutral-700/50 border border-neutral-700/50 hover:border-neutral-600 rounded-md text-white font-mono text-sm transition-all duration-200 shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] relative"
+                    >
+                      <span>VIEW EVIDENCE FILES</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <LinkGradient />
+                    </a>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
@@ -404,7 +433,7 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
             </div>
           </div>
         </div>
-      </div>
+      </NoirBackground>
     </>
   );
 }

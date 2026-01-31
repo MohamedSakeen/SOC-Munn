@@ -4,11 +4,12 @@ import { useEffect, useState, Suspense } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import api from '@/lib/api';
-import { LoaderFive } from '@/components/ui/loader';
+import { LoaderTwo } from '@/components/ui/loader';
 import SpotlightCard from '@/components/SpotlightCard';
 import { CaseFileCard } from '@/components/ui/case-file-card';
 import { NoirBackground, RadarSweep } from '@/components/ui/noir-background';
 import { ParticlesBackground } from '@/components/ui/particles-background';
+import { NoirDecorations } from '@/components/ui/noir-decorations';
 import { cn } from '@/lib/utils';
 import { toast, Toaster } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -22,6 +23,7 @@ interface ProblemStatement {
   totalQuestions: number;
   completedQuestions: number;
   score: number;
+  severity?: 'low' | 'medium' | 'high' | 'critical';
 }
 
 // Component to handle URL params toast
@@ -127,7 +129,7 @@ export default function UserDashboard() {
   if (loading || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
-        <LoaderFive text="Loading" />
+        <LoaderTwo />
       </div>
     );
   }
@@ -142,6 +144,9 @@ export default function UserDashboard() {
       <NoirBackground variant="grid">
         {/* Particles */}
         <ParticlesBackground variant="dust" className="fixed inset-0 pointer-events-none" />
+        
+        {/* Noir decorations - fingerprints, stamps, etc */}
+        <NoirDecorations />
         
         {/* Radar sweep in corner */}
         <RadarSweep />
@@ -208,7 +213,7 @@ export default function UserDashboard() {
                   <div>
                     <p className="text-xs text-amber-400 font-mono tracking-wider mb-1">AGENT BRIEFING</p>
                     <h2 className="text-3xl font-bold text-white mb-1 font-mono">Welcome, {teamName}</h2>
-                    <p className="text-neutral-400 text-sm">Your mission: Complete all case files to earn points</p>
+                    <p className="text-neutral-400 text-sm">Your mission: Complete all allocations to earn points</p>
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-neutral-400 font-mono tracking-wider mb-1">CURRENT SCORE</p>
@@ -221,10 +226,10 @@ export default function UserDashboard() {
             </SpotlightCard>
           </motion.div>
 
-          {/* Case Files Header */}
+          {/* Case Management Header */}
           <div className="flex items-center gap-3 mb-6">
             <FileText className="w-6 h-6 text-amber-500" />
-            <h2 className="text-2xl font-bold text-white font-mono tracking-wide">CASE FILES</h2>
+            <h2 className="text-2xl font-bold text-white font-mono tracking-wide">CASE MANAGEMENT</h2>
             {!allowPSAccess && (
               <Badge className="bg-red-900/30 text-red-400 border-red-500/50 font-mono">
                 <Lock className="w-3 h-3 mr-1" />
@@ -249,6 +254,7 @@ export default function UserDashboard() {
                   totalScore={ps.score}
                   isLocked={!allowPSAccess}
                   progress={{ completed: ps.completedQuestions, total: ps.totalQuestions }}
+                  severity={ps.severity}
                   onClick={() => handleCardClick(ps.psNumber)}
                 />
               </motion.div>

@@ -12,9 +12,17 @@ interface CaseFileCardProps {
   totalScore: number;
   isLocked?: boolean;
   progress?: { completed: number; total: number };
+  severity?: 'low' | 'medium' | 'high' | 'critical';
   onClick?: () => void;
   className?: string;
 }
+
+const severityConfig = {
+  low: { label: 'LOW', color: 'text-green-400', bg: 'bg-green-500/20', border: 'border-green-500/40' },
+  medium: { label: 'MED', color: 'text-yellow-400', bg: 'bg-yellow-500/20', border: 'border-yellow-500/40' },
+  high: { label: 'HIGH', color: 'text-orange-400', bg: 'bg-orange-500/20', border: 'border-orange-500/40' },
+  critical: { label: 'CRIT', color: 'text-red-400', bg: 'bg-red-500/20', border: 'border-red-500/40' },
+};
 
 export function CaseFileCard({
   psNumber,
@@ -23,10 +31,12 @@ export function CaseFileCard({
   totalScore,
   isLocked = false,
   progress,
+  severity,
   onClick,
   className,
 }: CaseFileCardProps) {
   const isComplete = progress && progress.completed === progress.total;
+  const severityStyle = severity ? severityConfig[severity] : null;
 
   return (
     <motion.div
@@ -40,7 +50,16 @@ export function CaseFileCard({
       )}
     >
       {/* Folder tab - positioned above the card */}
-      <div className="relative ml-4 w-28 h-5 bg-linear-to-b from-amber-300/25 to-amber-200/15 rounded-t-md border-t-2 border-x-2 border-amber-900/40 z-10" />
+      <div className="relative ml-4 w-28 h-5 bg-linear-to-b from-amber-300/25 to-amber-200/15 rounded-t-md border-t-2 border-x-2 border-amber-900/40 z-10 flex items-center justify-center">
+        {severityStyle && (
+          <span className={cn(
+            "text-[10px] font-bold font-mono tracking-wider",
+            severityStyle.color
+          )}>
+            {severityStyle.label}
+          </span>
+        )}
+      </div>
       
       {/* Manila folder background */}
       <div className={cn(
@@ -61,13 +80,12 @@ export function CaseFileCard({
             <div className="flex items-center gap-2">
               <FileText className="w-5 h-5 text-amber-500/70" />
               <span className="text-xs font-mono text-amber-500/70 tracking-wider">
-                CASE FILE #{String(psNumber).padStart(3, '0')}
+                ALLOT {String(psNumber).padStart(3, '0')}
               </span>
             </div>
             
             {isLocked ? (
               <Badge variant="outline" className="bg-red-900/20 text-red-400 border-red-500/50 gap-1">
-                <Lock className="w-3 h-3" />
                 CLASSIFIED
               </Badge>
             ) : isComplete ? (

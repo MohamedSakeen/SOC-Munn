@@ -22,6 +22,7 @@ export interface ProblemStatement {
   title: string;
   description: string;
   details: any;
+  severity?: 'low' | 'medium' | 'high' | 'critical';
 }
 
 export interface Team {

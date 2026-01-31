@@ -3,8 +3,11 @@
 import { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { LoaderFive } from '@/components/ui/loader';
+import { LoaderTwo } from '@/components/ui/loader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { NoirBackground } from '@/components/ui/noir-background';
+import { ParticlesBackground } from '@/components/ui/particles-background';
+import { NoirDecorations } from '@/components/ui/noir-decorations';
 import { cn } from '@/lib/utils';
 import { 
   Shield, 
@@ -54,7 +57,7 @@ export default function RulesPage() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
-        <LoaderFive text="Loading" />
+        <LoaderTwo />
       </div>
     );
   }
@@ -103,7 +106,13 @@ export default function RulesPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <NoirBackground variant="scanlines">
+      {/* Particles */}
+      <ParticlesBackground variant="dust" className="fixed inset-0 pointer-events-none" />
+      
+      {/* Noir decorations */}
+      <NoirDecorations />
+
       {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-800/50 rounded-b-3xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -192,6 +201,6 @@ export default function RulesPage() {
           </p>
         </motion.div>
       </div>
-    </div>
+    </NoirBackground>
   );
 }

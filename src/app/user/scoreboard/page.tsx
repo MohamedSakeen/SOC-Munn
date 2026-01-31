@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
-import { LoaderFive } from '@/components/ui/loader';
+import { LoaderTwo } from '@/components/ui/loader';
 import { toast, Toaster } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { NoirBackground } from '@/components/ui/noir-background';
 import { ParticlesBackground } from '@/components/ui/particles-background';
+import { NoirDecorations } from '@/components/ui/noir-decorations';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { Trophy, Droplet, Check, ArrowLeft, TrendingUp, Shield } from 'lucide-react';
@@ -82,7 +83,7 @@ export default function UserScoreboard() {
   if (loading || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
-        <LoaderFive text="Loading" />
+        <LoaderTwo />
       </div>
     );
   }
@@ -92,6 +93,9 @@ export default function UserScoreboard() {
       <Toaster position="top-right" theme="dark" richColors />
       <NoirBackground variant="grid">
         <ParticlesBackground variant="dust" className="fixed inset-0 pointer-events-none opacity-50" />
+        
+        {/* Noir decorations */}
+        <NoirDecorations />
         
         {/* Header */}
         <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-800/50 rounded-b-3xl">

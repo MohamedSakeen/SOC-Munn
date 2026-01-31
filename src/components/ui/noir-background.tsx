@@ -11,7 +11,7 @@ interface NoirBackgroundProps {
 
 export function NoirBackground({ children, variant = 'default', className }: NoirBackgroundProps) {
   return (
-    <div className={cn("relative min-h-screen bg-black overflow-hidden", className)}>
+    <div className={cn("relative min-h-screen bg-black", className)}>
       {/* Base gradient */}
       <div className="fixed inset-0 bg-gradient-to-br from-neutral-950 via-black to-neutral-900 pointer-events-none" />
       

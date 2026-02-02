@@ -336,8 +336,8 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                   )}>
                     <CollapsibleTrigger asChild>
                       <CardHeader className="cursor-pointer transition-colors py-3">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex items-start gap-3 flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
                             {/* Question Number */}
                             <div className={cn(
                               "w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0",
@@ -348,18 +348,13 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
                               {question.isCompleted ? <Check className="w-4 h-4" /> : index + 1}
                             </div>
                             
-                            <div className="flex-1 min-w-0 space-y-1">
+                            <div className="flex-1 min-w-0">
                               <p className={cn(
                                 "text-sm font-medium",
                                 question.isCompleted ? "text-green-400" : "text-white"
                               )}>
                                 {question.question}
                               </p>
-                              {question.hint && (
-                                <p className="text-xs text-yellow-200/70">
-                                  {question.hint}
-                                </p>
-                              )}
                             </div>
                           </div>
                           

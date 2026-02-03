@@ -208,7 +208,7 @@ export default function RulesPage() {
               <div className="flex flex-wrap gap-4">
                 {/* VM Download Button */}
                 <a
-                  href="https://drive.google.com/your-vm-link"
+                  href="https://drive.google.com/drive/folders/1SQd7NzH-KU8KcBEX1XGBw-6IiYDeX-Uy?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group/btn relative px-6 py-3 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono flex items-center gap-2 hover:bg-neutral-700/50"

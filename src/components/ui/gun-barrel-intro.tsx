@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useCallback } from 'react';
@@ -227,7 +227,7 @@ export function GunBarrelIntro({ onComplete, skip = false }: GunBarrelIntroProps
         {/* Skip hint */}
         {phase !== 'blood' && (
           <motion.div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 text-neutral-500 text-sm z-[100]"
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 text-cyan-400/50 text-sm z-[100]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.6 }}
             transition={{ delay: 0.5 }}

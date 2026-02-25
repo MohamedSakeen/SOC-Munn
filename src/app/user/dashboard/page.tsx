@@ -29,11 +29,11 @@ interface ProblemStatement {
 // Component to handle URL params toast
 function ToastHandler() {
   const searchParams = useSearchParams();
-  
+
   useEffect(() => {
     const error = searchParams.get('error');
     const success = searchParams.get('success');
-    
+
     if (error) {
       toast.error(decodeURIComponent(error));
       window.history.replaceState({}, '', '/user/dashboard');
@@ -57,7 +57,7 @@ export default function UserDashboard() {
   const [showResultsToUsers, setShowResultsToUsers] = useState(false);
   const [allowPSAccess, setAllowPSAccess] = useState(false);
 
-    const BottomGradient = () => {
+  const BottomGradient = () => {
     return (
       <>
         <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-linear-to-r from-transparent via-red-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
@@ -68,8 +68,8 @@ export default function UserDashboard() {
 
   useEffect(() => {
     if (authLoading) return;
-    
-    if (!user || user.role !== 'user') {
+
+    if (!user || (user.role !== 'user' && user.role !== 'team')) {
       router.push('/login');
       return;
     }
@@ -144,15 +144,15 @@ export default function UserDashboard() {
       <NoirBackground variant="grid">
         {/* Particles */}
         <ParticlesBackground variant="dust" className="fixed inset-0 pointer-events-none" />
-        
+
         {/* Noir decorations - fingerprints, stamps, etc */}
         <NoirDecorations />
-        
+
         {/* Radar sweep in corner */}
         <RadarSweep />
 
         {/* Navbar */}
-        <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-800/50 rounded-b-3xl">
+        <nav className="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-[#1a2d4a]/70 rounded-b-3xl">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center gap-3">
@@ -161,7 +161,7 @@ export default function UserDashboard() {
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => router.push('/user/rules')}
-                  className="relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-neutral-300 border border-neutral-700/50 transition-all cursor-pointer flex items-center gap-2 font-mono hover:border-amber-500/50 hover:text-amber-400"
+                  className="relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-[#9CA3AF] border border-[#1a2d4a]/50 transition-all cursor-pointer flex items-center gap-2 font-mono hover:border-[#00E5FF]/40 hover:text-[#00E5FF]"
                 >
                   <BookOpen className="w-4 h-4" />
                   RULES
@@ -177,7 +177,7 @@ export default function UserDashboard() {
                     </button>
                     <button
                       onClick={() => router.push('/user/timeline')}
-                      className="relative px-4 py-2 text-sm rounded-md bg-amber-500/20 font-medium text-amber-400 border border-amber-500/50 transition-all cursor-pointer flex items-center gap-2 font-mono"
+                      className="relative px-4 py-2 text-sm rounded-md bg-[#00E5FF]/10 font-medium text-[#00E5FF] border border-[#00E5FF]/30 transition-all cursor-pointer flex items-center gap-2 font-mono"
                     >
                       <TrendingUp className="w-4 h-4" />
                       INTEL
@@ -186,7 +186,7 @@ export default function UserDashboard() {
                 )}
                 <button
                   onClick={logout}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-red-950/40 font-medium text-white border border-red-900/50 shadow-[0px_1px_1px_1px_rgba(220,38,38,0.15)_inset] transition-all cursor-pointer font-mono hover:border-red-600/70"
                 >
                   LOGOUT
                   <BottomGradient />
@@ -205,19 +205,19 @@ export default function UserDashboard() {
             className="mb-8"
           >
             <SpotlightCard
-              spotlightColor="rgba(217, 119, 6, 0.3)"
+              spotlightColor="rgba(0, 229, 255, 0.15)"
               className="overflow-hidden"
             >
               <div className="p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
-                    <p className="text-xs text-amber-400 font-mono tracking-wider mb-1">AGENT BRIEFING</p>
+                    <p className="text-xs text-[#00E5FF] font-mono tracking-wider mb-1">AGENT BRIEFING</p>
                     <h2 className="text-3xl font-bold text-white mb-1 font-mono">Welcome, {teamName}</h2>
-                    <p className="text-neutral-400 text-sm">Your mission: Complete all allocations to earn points</p>
+                    <p className="text-[#9CA3AF] text-sm">Your mission: Complete all allocations to earn points</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-neutral-400 font-mono tracking-wider mb-1">CURRENT SCORE</p>
-                    <p className="text-5xl font-bold text-amber-400 font-mono">
+                    <p className="text-xs text-[#9CA3AF] font-mono tracking-wider mb-1">CURRENT SCORE</p>
+                    <p className="text-5xl font-bold text-[#00E5FF] font-mono">
                       {totalScore}
                     </p>
                   </div>
@@ -228,7 +228,7 @@ export default function UserDashboard() {
 
           {/* Case Management Header */}
           <div className="flex items-center gap-3 mb-6">
-            <FileText className="w-6 h-6 text-amber-500" />
+            <FileText className="w-6 h-6 text-[#00E5FF]" />
             <h2 className="text-2xl font-bold text-white font-mono tracking-wide">CASE MANAGEMENT</h2>
             {!allowPSAccess && (
               <Badge className="bg-red-900/30 text-red-400 border-red-500/50 font-mono">
@@ -266,14 +266,14 @@ export default function UserDashboard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="my-8 p-6 rounded-xl bg-neutral-900/50 border border-neutral-800/50 backdrop-blur"
+            className="my-8 p-6 rounded-xl bg-black/60 border border-[#1a2d4a]/60 backdrop-blur"
           >
             <div className="flex items-center gap-2 mb-4">
               <span className="text-lg">📋</span>
               <h3 className="text-lg font-semibold text-white font-mono">SCORING INTEL</h3>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-neutral-800/30 border border-neutral-700/30">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-red-950/20 border border-red-900/30">
                 <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
                   <span className="text-red-400">🩸</span>
                 </div>
@@ -282,7 +282,7 @@ export default function UserDashboard() {
                   <p className="text-green-400 font-mono">+45 pts</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-neutral-800/30 border border-neutral-700/30">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-[#111A2E]/60 border border-[#1a2d4a]/40">
                 <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
                   <span className="text-green-400">✓</span>
                 </div>
@@ -291,7 +291,7 @@ export default function UserDashboard() {
                   <p className="text-green-400 font-mono">+30 pts</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-neutral-800/30 border border-neutral-700/30">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-red-950/20 border border-red-900/30">
                 <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
                   <span className="text-red-400">✗</span>
                 </div>

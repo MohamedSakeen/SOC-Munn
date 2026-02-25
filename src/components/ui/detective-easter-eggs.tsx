@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
@@ -74,7 +74,7 @@ export const triggerCelebration = (type: 'correct' | 'firstBlood' | 'caseClosed'
       particleCount: 150,
       spread: 100,
       origin: { y: 0.5 },
-      colors: ['#00ff00', '#44ff44', '#88ff88'],
+      colors: ['#00E5FF', '#2979FF', '#7C4DFF'],
     },
     missionComplete: {
       particleCount: 300,
@@ -135,12 +135,12 @@ export function CaseClosedOverlay({ show, message, onClose }: CaseClosedOverlayP
                 CASE CLOSED
               </h2>
             </motion.div>
-            
+
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="mt-6 text-xl text-neutral-300"
+              className="mt-6 text-xl text-cyan-300"
             >
               {message}
             </motion.p>

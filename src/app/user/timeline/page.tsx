@@ -1,4 +1,4 @@
-//@ts-nocheck
+﻿//@ts-nocheck
 
 'use client';
 
@@ -177,17 +177,17 @@ export default function UserTimeline() {
         <NoirDecorations />
         
         {/* Header */}
-        <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-800/50 rounded-b-3xl">
+        <nav className="sticky top-0 z-50 bg-[#0B1220]/90 backdrop-blur-xl border-b border-[#1a2d4a]/50 rounded-b-3xl">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <h1 className="text-xl font-bold text-white flex items-center gap-2 font-mono">
-                <TrendingUp className="w-6 h-6 text-amber-400" />
+                <TrendingUp className="w-6 h-6 text-cyan-400" />
                 MISSION INTEL
               </h1>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => router.push('/user/scoreboard')}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer font-mono"
                 >
                   <Trophy className="w-4 h-4 inline mr-2" />
                   RANKINGS
@@ -195,7 +195,7 @@ export default function UserTimeline() {
                 </button>
                 <button
                   onClick={() => router.push('/user/dashboard')}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer font-mono"
                 >
                   <ArrowLeft className="w-4 h-4 inline mr-2" />
                   BACK
@@ -203,7 +203,7 @@ export default function UserTimeline() {
                 </button>
                 <button
                   onClick={logout}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer"
                 >
                   Logout
                   <BottomGradient color="red" />
@@ -215,13 +215,13 @@ export default function UserTimeline() {
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Card className="bg-neutral-900/50 border-neutral-800">
-            <CardHeader className="border-b border-neutral-800">
+          <Card className="bg-[#111A2E]/50 border-[#1a2d4a]">
+            <CardHeader className="border-b border-[#1a2d4a]">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-xl text-white">Team Score Progression Over Time</CardTitle>
                 <button
                   onClick={selectAllTeams}
-                  className="px-4 py-2 text-xs bg-neutral-800/50 text-white rounded-md border border-neutral-700 hover:bg-neutral-700/50 transition-colors"
+                  className="px-4 py-2 text-xs bg-[#111A2E]/60 text-white rounded-md border border-[#1e3550] hover:bg-[#1a2d4a]/50 transition-colors"
                 >
                   Select All
                 </button>
@@ -238,13 +238,13 @@ export default function UserTimeline() {
                       key={team.teamId}
                       onClick={() => toggleTeam(team.teamId)}
                       className={cn(
-                        "flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all cursor-pointer bg-neutral-800/50 border border-neutral-700 hover:bg-neutral-700/50",
-                        isSelected ? "text-white" : "text-neutral-500"
+                        "flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all cursor-pointer bg-[#111A2E]/60 border border-[#1e3550] hover:bg-[#1a2d4a]/50",
+                        isSelected ? "text-white" : "text-cyan-400/50"
                       )}
                     >
                       <span
                         className="w-3 h-3 rounded-full"
-                        style={{ backgroundColor: isSelected ? color : '#525252' }}
+                        style={{ backgroundColor: isSelected ? color : '#1a2d4a' }}
                       />
                       {team.teamName}
                     </button>
@@ -259,19 +259,19 @@ export default function UserTimeline() {
                     <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                       <XAxis 
                         dataKey="time" 
-                        stroke="#525252" 
-                        tick={{ fill: '#a3a3a3', fontSize: 12 }}
-                        tickLine={{ stroke: '#525252' }}
+                        stroke="#00E5FF" 
+                        tick={{ fill: '#9BA4B5', fontSize: 12 }}
+                        tickLine={{ stroke: '#00E5FF' }}
                       />
                       <YAxis 
-                        stroke="#525252" 
-                        tick={{ fill: '#a3a3a3', fontSize: 12 }}
-                        tickLine={{ stroke: '#525252' }}
+                        stroke="#00E5FF" 
+                        tick={{ fill: '#9BA4B5', fontSize: 12 }}
+                        tickLine={{ stroke: '#00E5FF' }}
                       />
                       <Tooltip 
                         contentStyle={{ 
-                          backgroundColor: '#171717', 
-                          border: '1px solid #404040',
+                          backgroundColor: '#111A2E', 
+                          border: '1px solid #00E5FF',
                           borderRadius: '8px'
                         }}
                         labelStyle={{ color: '#fff' }}
@@ -295,7 +295,7 @@ export default function UserTimeline() {
                     </LineChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="h-full flex items-center justify-center text-neutral-500">
+                    <div className="h-full flex items-center justify-center text-cyan-400/50">
                     {selectedTeams.size === 0 ? 'Select teams to view timeline' : 'No data available'}
                   </div>
                 )}

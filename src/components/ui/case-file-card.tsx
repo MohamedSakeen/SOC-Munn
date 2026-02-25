@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -50,7 +50,7 @@ export function CaseFileCard({
       )}
     >
       {/* Folder tab - positioned above the card */}
-      <div className="relative ml-4 w-28 h-5 bg-linear-to-b from-amber-300/25 to-amber-200/15 rounded-t-md border-t-2 border-x-2 border-amber-900/40 z-10 flex items-center justify-center">
+      <div className="relative ml-4 w-28 h-5 bg-linear-to-b from-[#1a2d4a] to-[#0F172A] rounded-t-md border-t-2 border-x-2 border-[#2979FF]/30 z-10 flex items-center justify-center">
         {severityStyle && (
           <span className={cn(
             "text-[10px] font-bold font-mono tracking-wider",
@@ -60,14 +60,14 @@ export function CaseFileCard({
           </span>
         )}
       </div>
-      
+
       {/* Manila folder background */}
       <div className={cn(
         "relative rounded-lg overflow-hidden",
-        "bg-linear-to-br from-amber-100/10 via-amber-50/5 to-amber-100/10",
-        "border-2 border-amber-900/30",
-        "shadow-lg shadow-black/50",
-        !isLocked && "hover:border-amber-700/50 hover:shadow-amber-900/20",
+        "bg-linear-to-br from-[#0F172A] via-[#111827] to-[#0F172A]",
+        "border-2 border-[#2979FF]/25",
+        "shadow-lg shadow-black/60",
+        !isLocked && "hover:border-[#00E5FF]/40 hover:shadow-[#00E5FF]/10",
         "transition-all duration-300"
       )}>
         {/* Paper texture overlay */}
@@ -78,12 +78,12 @@ export function CaseFileCard({
           {/* Case number badge */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <FileText className="w-5 h-5 text-amber-500/70" />
-              <span className="text-xs font-mono text-amber-500/70 tracking-wider">
+              <FileText className="w-5 h-5 text-[#2979FF]/60" />
+              <span className="text-xs font-mono text-[#2979FF]/70 tracking-wider">
                 ALLOT {String(psNumber).padStart(3, '0')}
               </span>
             </div>
-            
+
             {isLocked ? (
               <Badge variant="outline" className="bg-red-900/20 text-red-400 border-red-500/50 gap-1">
                 CLASSIFIED
@@ -102,34 +102,34 @@ export function CaseFileCard({
           {/* Title */}
           <h3 className={cn(
             "text-lg font-bold mb-2 font-mono",
-            isComplete ? "text-green-400" : "text-amber-100"
+            isComplete ? "text-green-400" : "text-[#E5F0FF]"
           )}>
             {title}
           </h3>
 
           {/* Description */}
-          <p className="text-sm text-neutral-400 line-clamp-2 mb-4">
+          <p className="text-sm text-cyan-400/50 line-clamp-2 mb-4">
             {description}
           </p>
 
           {/* Footer */}
-          <div className="flex items-center justify-between pt-3 border-t border-amber-900/30">
+          <div className="flex items-center justify-between pt-3 border-t border-[#2979FF]/20">
             {progress && (
               <div className="flex items-center gap-2">
-                <div className="h-1.5 w-24 bg-neutral-800 rounded-full overflow-hidden">
+                <div className="h-1.5 w-24 bg-[#1a2d4a] rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-gradient-to-r from-amber-500 to-green-500"
+                    className="h-full bg-gradient-to-r from-[#2979FF] to-[#00E5FF]"
                     initial={{ width: 0 }}
                     animate={{ width: `${(progress.completed / progress.total) * 100}%` }}
                     transition={{ duration: 0.5 }}
                   />
                 </div>
-                <span className="text-xs text-neutral-500">
+                <span className="text-xs text-cyan-400/40">
                   {progress.completed}/{progress.total}
                 </span>
               </div>
             )}
-            <span className="text-sm font-bold text-amber-400">
+            <span className="text-sm font-bold text-[#00E5FF]">
               {totalScore} pts
             </span>
           </div>

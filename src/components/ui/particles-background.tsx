@@ -33,7 +33,7 @@ export function ParticlesBackground({ variant = 'default', className }: Particle
           background: { color: { value: 'transparent' } },
           fpsLimit: 60,
           particles: {
-            color: { value: '#ffffff' },
+            color: { value: '#00E5FF' },
             move: {
               direction: 'bottom',
               enable: true,
@@ -53,7 +53,7 @@ export function ParticlesBackground({ variant = 'default', className }: Particle
           background: { color: { value: 'transparent' } },
           fpsLimit: 30,
           particles: {
-            color: { value: '#888888' },
+            color: { value: '#9BA4B5' },
             move: {
               direction: 'top',
               enable: true,
@@ -82,7 +82,7 @@ export function ParticlesBackground({ variant = 'default', className }: Particle
               random: true,
             },
             number: { density: { enable: true }, value: 50 },
-            opacity: { 
+            opacity: {
               value: { min: 0.1, max: 0.4 },
               animation: { enable: true, speed: 0.5, sync: false }
             },
@@ -97,7 +97,7 @@ export function ParticlesBackground({ variant = 'default', className }: Particle
           background: { color: { value: 'transparent' } },
           fpsLimit: 60,
           particles: {
-            color: { value: '#00ff00' },
+            color: { value: '#00E5FF' },
             move: {
               direction: 'bottom',
               enable: true,
@@ -125,9 +125,9 @@ export function ParticlesBackground({ variant = 'default', className }: Particle
             },
           },
           particles: {
-            color: { value: '#ffffff' },
+            color: { value: '#00E5FF' },
             links: {
-              color: '#ffffff',
+              color: '#00E5FF',
               distance: 150,
               enable: true,
               opacity: 0.1,

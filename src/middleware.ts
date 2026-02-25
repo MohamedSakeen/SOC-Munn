@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
   const userStr = request.cookies.get('user')?.value;
-  
+
   let user = null;
   if (userStr) {
     try {
@@ -31,7 +31,7 @@ export function middleware(request: NextRequest) {
   // Admin routes
   if (pathname.startsWith('/admin')) {
     if (user.role !== 'admin') {
-      // User trying to access admin - redirect to user dashboard
+      // Non-admins trying to access admin - redirect to user dashboard
       return NextResponse.redirect(new URL('/user/dashboard', request.url));
     }
     return NextResponse.next();
@@ -39,10 +39,11 @@ export function middleware(request: NextRequest) {
 
   // User routes
   if (pathname.startsWith('/user')) {
-    if (user.role !== 'user') {
-      // Admin trying to access user - redirect to admin submissions
+    if (user.role === 'admin') {
+      // Admins trying to access user - redirect to admin submissions
       return NextResponse.redirect(new URL('/admin/submissions', request.url));
     }
+    // allow 'user' and 'team' (legacy) roles to access user routes
     return NextResponse.next();
   }
 

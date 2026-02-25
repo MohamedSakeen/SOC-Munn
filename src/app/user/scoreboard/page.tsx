@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -29,11 +29,11 @@ export default function UserScoreboard() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const BottomGradient = ({ color }: { color: 'red' | 'blue' | 'purple' | 'green' }) => {
+  const BottomGradient = ({ color }: { color: 'red' | 'blue' | 'white' | 'green' }) => {
     const colorMap = {
       red: 'via-red-500',
       blue: 'via-blue-500',
-      purple: 'via-purple-500',
+      white: 'via-white',
       green: 'via-green-500'
     };
     return (
@@ -46,7 +46,7 @@ export default function UserScoreboard() {
 
   useEffect(() => {
     if (authLoading) return;
-    
+
     if (!user || user.role !== 'user') {
       router.push('/login');
       return;
@@ -75,9 +75,9 @@ export default function UserScoreboard() {
 
   const getRankBadge = (index: number) => {
     if (index === 0) return { emoji: '🥇', bg: 'bg-yellow-500/20', text: 'text-yellow-400', border: 'border-yellow-500/50' };
-    if (index === 1) return { emoji: '🥈', bg: 'bg-neutral-400/20', text: 'text-neutral-300', border: 'border-neutral-400/50' };
-    if (index === 2) return { emoji: '🥉', bg: 'bg-orange-500/20', text: 'text-orange-400', border: 'border-orange-500/50' };
-    return { emoji: '', bg: 'bg-neutral-800', text: 'text-neutral-400', border: 'border-neutral-700' };
+    if (index === 1) return { emoji: '🥈', bg: 'bg-blue-500/20', text: 'text-blue-300', border: 'border-blue-400/50' };
+    if (index === 2) return { emoji: '🥉', bg: 'bg-red-500/20', text: 'text-red-400', border: 'border-red-500/50' };
+    return { emoji: '', bg: 'bg-blue-950/40', text: 'text-blue-400', border: 'border-blue-900/60' };
   };
 
   if (loading || authLoading) {
@@ -93,12 +93,12 @@ export default function UserScoreboard() {
       <Toaster position="top-right" theme="dark" richColors />
       <NoirBackground variant="grid">
         <ParticlesBackground variant="dust" className="fixed inset-0 pointer-events-none opacity-50" />
-        
+
         {/* Noir decorations */}
         <NoirDecorations />
-        
+
         {/* Header */}
-        <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-800/50 rounded-b-3xl">
+        <nav className="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-blue-900/60 rounded-b-3xl">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <h1 className="text-xl font-bold text-white flex items-center gap-2 font-mono">
@@ -108,7 +108,7 @@ export default function UserScoreboard() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => router.push('/user/timeline')}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-blue-950/50 font-medium text-white border border-blue-900/50 shadow-[0px_1px_1px_1px_rgba(59,130,246,0.2)_inset] transition-all cursor-pointer font-mono hover:border-blue-600/70"
                 >
                   <TrendingUp className="w-4 h-4 inline mr-2" />
                   INTEL
@@ -116,15 +116,15 @@ export default function UserScoreboard() {
                 </button>
                 <button
                   onClick={() => router.push('/user/dashboard')}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-blue-950/50 font-medium text-white border border-blue-900/50 shadow-[0px_1px_1px_1px_rgba(59,130,246,0.2)_inset] transition-all cursor-pointer font-mono hover:border-blue-600/70"
                 >
                   <ArrowLeft className="w-4 h-4 inline mr-2" />
                   BACK
-                  <BottomGradient color="purple" />
+                  <BottomGradient color="blue" />
                 </button>
                 <button
                   onClick={logout}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-red-950/40 font-medium text-white border border-red-900/50 shadow-[0px_1px_1px_1px_rgba(220,38,38,0.2)_inset] transition-all cursor-pointer font-mono hover:border-red-600/70"
                 >
                   LOGOUT
                   <BottomGradient color="red" />
@@ -142,37 +142,37 @@ export default function UserScoreboard() {
             const myRank = teams.findIndex(t => t.teamName === user?.teamName) + 1;
             return (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <Card className="bg-neutral-900/50 border-neutral-800">
+                <Card className="bg-black/80 border-blue-900/60">
                   <CardContent className="p-4 flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-yellow-500/20 flex items-center justify-center">
                       <Trophy className="w-6 h-6 text-yellow-400" />
                     </div>
                     <div>
-                      <p className="text-sm text-neutral-400">Your Rank</p>
-                      <p className="text-2xl font-bold text-white">#{myRank || '-'} <span className="text-sm text-neutral-500">of {teams.length}</span></p>
+                      <p className="text-sm text-blue-400/70">Your Rank</p>
+                      <p className="text-2xl font-bold text-white">#{myRank || '-'} <span className="text-sm text-blue-400/40">of {teams.length}</span></p>
                     </div>
                   </CardContent>
                 </Card>
-                <Card className="bg-neutral-900/50 border-neutral-800">
+                <Card className="bg-black/80 border-blue-900/60">
                   <CardContent className="p-4 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
-                      <Check className="w-6 h-6 text-green-400" />
+                    <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+                      <Check className="w-6 h-6 text-blue-400" />
                     </div>
                     <div>
-                      <p className="text-sm text-neutral-400">Your Solved</p>
+                      <p className="text-sm text-blue-400/70">Your Solved</p>
                       <p className="text-2xl font-bold text-white">
                         {myTeam?.completedQuestions || 0}
                       </p>
                     </div>
                   </CardContent>
                 </Card>
-                <Card className="bg-neutral-900/50 border-neutral-800">
+                <Card className="bg-black/80 border-blue-900/60">
                   <CardContent className="p-4 flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center">
                       <Droplet className="w-6 h-6 text-red-400" />
                     </div>
                     <div>
-                      <p className="text-sm text-neutral-400">Your First Bloods</p>
+                      <p className="text-sm text-blue-400/70">Your First Bloods</p>
                       <p className="text-2xl font-bold text-white">
                         {myTeam?.firstBloods || 0}
                       </p>
@@ -184,28 +184,28 @@ export default function UserScoreboard() {
           })()}
 
           {/* Leaderboard Table */}
-          <Card className="bg-neutral-900/50 border-neutral-800">
-            <CardHeader>
+          <Card className="bg-black/80 border-blue-900/60">
+            <CardHeader className="border-b border-blue-900/40">
               <CardTitle className="text-white">Rankings</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-neutral-800">
-                      <th className="text-left py-3 px-4 text-neutral-400 font-medium">Rank</th>
-                      <th className="text-left py-3 px-4 text-neutral-400 font-medium">Team</th>
-                      <th className="text-center py-3 px-4 text-neutral-400 font-medium">
+                    <tr className="border-b border-blue-900/50 bg-blue-950/20">
+                      <th className="text-left py-3 px-4 text-blue-400/70 font-medium">Rank</th>
+                      <th className="text-left py-3 px-4 text-blue-400/70 font-medium">Team</th>
+                      <th className="text-center py-3 px-4 text-blue-400/70 font-medium">
                         <span className="flex items-center justify-center gap-1">
                           <Check className="w-4 h-4" /> Solved
                         </span>
                       </th>
-                      <th className="text-center py-3 px-4 text-neutral-400 font-medium">
+                      <th className="text-center py-3 px-4 text-blue-400/70 font-medium">
                         <span className="flex items-center justify-center gap-1">
                           <Droplet className="w-4 h-4 text-red-400" /> First Bloods
                         </span>
                       </th>
-                      <th className="text-right py-3 px-4 text-neutral-400 font-medium">Score</th>
+                      <th className="text-right py-3 px-4 text-blue-400/70 font-medium">Score</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -213,11 +213,11 @@ export default function UserScoreboard() {
                       const badge = getRankBadge(index);
                       const isCurrentTeam = team.teamName === user?.teamName;
                       return (
-                        <tr 
-                          key={team.teamId} 
+                        <tr
+                          key={team.teamId}
                           className={cn(
-                            "border-b border-neutral-800/50 transition-colors",
-                            isCurrentTeam ? "bg-amber-500/10" : "hover:bg-neutral-800/30"
+                            "border-b border-blue-900/30 transition-colors",
+                            isCurrentTeam ? "bg-blue-900/20" : "hover:bg-blue-950/30"
                           )}
                         >
                           <td className="py-4 px-4">
@@ -232,19 +232,19 @@ export default function UserScoreboard() {
                             <div>
                               <p className={cn(
                                 "font-semibold",
-                                isCurrentTeam ? "text-amber-400" : "text-white"
+                                isCurrentTeam ? "text-blue-400" : "text-white"
                               )}>
                                 {team.teamName}
-                                {isCurrentTeam && <span className="ml-2 text-xs text-amber-400">(You)</span>}
+                                {isCurrentTeam && <span className="ml-2 text-xs text-blue-400">(You)</span>}
                               </p>
-                              <p className="text-xs text-neutral-500">
+                              <p className="text-xs text-blue-400/40">
                                 {team.teamMembers?.slice(0, 2).join(', ')}
                                 {team.teamMembers?.length > 2 && ` +${team.teamMembers.length - 2}`}
                               </p>
                             </div>
                           </td>
                           <td className="py-4 px-4 text-center">
-                            <span className="text-green-400 font-medium">{team.completedQuestions}</span>
+                            <span className="text-blue-400 font-medium">{team.completedQuestions}</span>
                           </td>
                           <td className="py-4 px-4 text-center">
                             <span className="text-red-400 font-medium">{team.firstBloods}</span>
@@ -252,9 +252,9 @@ export default function UserScoreboard() {
                           <td className="py-4 px-4 text-right">
                             <span className={cn(
                               "text-xl font-bold",
-                              index === 0 ? "text-yellow-400" : 
-                              index === 1 ? "text-neutral-300" : 
-                              index === 2 ? "text-orange-400" : "text-white"
+                              index === 0 ? "text-yellow-400" :
+                                index === 1 ? "text-blue-300" :
+                                  index === 2 ? "text-red-400" : "text-white"
                             )}>
                               {team.totalScore}
                             </span>

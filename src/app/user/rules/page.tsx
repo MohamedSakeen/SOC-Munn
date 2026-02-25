@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -9,13 +9,13 @@ import { NoirBackground } from '@/components/ui/noir-background';
 import { ParticlesBackground } from '@/components/ui/particles-background';
 import { NoirDecorations } from '@/components/ui/noir-decorations';
 import { cn } from '@/lib/utils';
-import { 
-  Shield, 
-  AlertTriangle, 
-  Trophy, 
-  Clock, 
-  Users, 
-  FileText, 
+import {
+  Shield,
+  AlertTriangle,
+  Trophy,
+  Clock,
+  Users,
+  FileText,
   CheckCircle,
   XCircle,
   Droplet,
@@ -41,16 +41,16 @@ export default function RulesPage() {
   const DashboardGradient = () => {
     return (
       <>
-        <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-linear-to-r from-transparent via-amber-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
-        <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-linear-to-r from-transparent via-amber-600 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+        <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-linear-to-r from-transparent via-blue-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+        <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-linear-to-r from-transparent via-blue-600 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
       </>
     );
   };
 
   useEffect(() => {
     if (authLoading) return;
-    
-    if (!user || user.role !== 'user') {
+
+    if (!user || (user.role !== 'user' && user.role !== 'team')) {
       router.push('/login');
       return;
     }
@@ -111,12 +111,12 @@ export default function RulesPage() {
     <NoirBackground variant="scanlines">
       {/* Particles */}
       <ParticlesBackground variant="dust" className="fixed inset-0 pointer-events-none" />
-      
+
       {/* Noir decorations */}
       <NoirDecorations />
 
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-800/50 rounded-b-3xl">
+      <nav className="sticky top-0 z-50 bg-[#0B1220]/90 backdrop-blur-xl border-b border-[#1a2d4a]/50 rounded-b-3xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
@@ -125,7 +125,7 @@ export default function RulesPage() {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => router.push('/user/dashboard')}
-                className="group/btn relative px-4 py-2 text-sm rounded-md bg-amber-500/20 font-medium text-amber-400 border border-amber-500/50 transition-all cursor-pointer flex items-center gap-2 font-mono"
+                className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#00E5FF]/10 font-medium text-[#00E5FF] border border-[#00E5FF]/30 transition-all cursor-pointer flex items-center gap-2 font-mono"
               >
                 <FileText className="w-4 h-4" />
                 CASE FILES
@@ -133,7 +133,7 @@ export default function RulesPage() {
               </button>
               <button
                 onClick={logout}
-                className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono"
+                className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer font-mono"
               >
                 LOGOUT
                 <BottomGradient />
@@ -152,7 +152,7 @@ export default function RulesPage() {
           className="text-center mb-12"
         >
           <h1 className="text-4xl font-bold text-white mb-4 font-mono">RULES OF ENGAGEMENT</h1>
-          <p className="text-neutral-400 max-w-2xl mx-auto">
+          <p className="text-cyan-400/70 max-w-2xl mx-auto">
             Read these rules carefully before starting your mission. Violation of any rules may result in disqualification.
           </p>
         </motion.div>
@@ -166,17 +166,17 @@ export default function RulesPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className="bg-neutral-900/50 border-neutral-800/50 h-full hover:border-amber-500/30 transition-colors">
+              <Card className="bg-[#111A2E]/50 border-[#1a2d4a]/50 h-full hover:border-cyan-400/30 transition-colors">
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-3 text-lg">
-                    <div className="p-2 rounded-lg bg-amber-500/10">
-                      <rule.icon className="w-5 h-5 text-amber-400" />
+                    <div className="p-2 rounded-lg bg-blue-400/10">
+                      <rule.icon className="w-5 h-5 text-cyan-400" />
                     </div>
                     <span className="text-white font-mono">{rule.title}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-neutral-400 text-sm leading-relaxed">
+                  <p className="text-cyan-400/50 text-sm leading-relaxed">
                     {rule.description}
                   </p>
                 </CardContent>
@@ -192,7 +192,7 @@ export default function RulesPage() {
           transition={{ delay: 0.7 }}
           className="mt-12"
         >
-          <Card className="bg-neutral-900/50 border-neutral-800/50">
+          <Card className="bg-[#111A2E]/50 border-[#1a2d4a]/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-xl">
                 <div className="p-2 rounded-lg bg-green-500/10">
@@ -202,7 +202,7 @@ export default function RulesPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-neutral-400 text-sm mb-6">
+              <p className="text-cyan-400/50 text-sm mb-6">
                 Download the required resources to complete the challenges. You can either download the VM image or use the local server.
               </p>
               <div className="flex flex-wrap gap-4">
@@ -211,26 +211,26 @@ export default function RulesPage() {
                   href="https://drive.google.com/file/d/1nH1iAwu5QGt-0UOQEJSyJuO0H4gJGD5r/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/btn relative px-6 py-3 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono flex items-center gap-2 hover:bg-neutral-700/50"
+                  className="group/btn relative px-6 py-3 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer font-mono flex items-center gap-2 hover:bg-[#1a2d4a]/50"
                 >
                   <Download className="w-4 h-4" />
                   DOWNLOAD VM IMAGE
                   <BottomGradient />
                 </a>
-                
+
                 {/* Local Server Download Button */}
                 <a
                   href="http://172.16.17.54:8080/Ubutu-22%20%28Revil%29%201.ova"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/btn relative px-6 py-3 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer font-mono flex items-center gap-2 hover:bg-neutral-700/50"
+                  className="group/btn relative px-6 py-3 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer font-mono flex items-center gap-2 hover:bg-[#1a2d4a]/50"
                 >
                   <Server className="w-4 h-4" />
                   LOCAL SERVER DOWNLOAD
                   <BottomGradient />
                 </a>
               </div>
-              <p className="text-neutral-500 text-xs mt-4 font-mono">
+              <p className="text-cyan-400/40 text-xs mt-4 font-mono">
                 Note: Local server requires the host to run &quot;py -m http.server&quot; on the network.
               </p>
             </CardContent>
@@ -246,11 +246,11 @@ export default function RulesPage() {
         >
           <button
             onClick={() => router.push('/user/dashboard')}
-            className="group/btn relative px-8 py-4 text-lg rounded-xl bg-amber-600 font-bold text-black shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition-all cursor-pointer font-mono"
+            className="group/btn relative px-8 py-4 text-lg rounded-xl bg-blue-700/90 font-bold text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-400/40 hover:bg-blue-600/90 transition-all cursor-pointer font-mono"
           >
             I UNDERSTAND - PROCEED TO MISSION
           </button>
-          <p className="text-neutral-500 text-sm mt-4 font-mono">
+          <p className="text-cyan-400/40 text-sm mt-4 font-mono">
             By proceeding, you agree to follow all rules outlined above.
           </p>
         </motion.div>

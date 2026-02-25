@@ -1,4 +1,4 @@
-//@ts-nocheck
+﻿//@ts-nocheck
 
 'use client';
 
@@ -33,11 +33,11 @@ const generateTeamColor = (index: number, total: number): string => {
   // Use golden ratio for better color distribution
   const goldenRatio = 0.618033988749895;
   const hue = (index * goldenRatio * 360) % 360;
-  
+
   // Vary saturation and lightness slightly for visual interest
   const saturation = 65 + (index % 3) * 10; // 65%, 75%, 85%
   const lightness = 55 + (index % 2) * 5;   // 55%, 60%
-  
+
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 };
 
@@ -77,7 +77,7 @@ export default function AdminTimeline() {
 
   useEffect(() => {
     if (authLoading) return;
-    
+
     if (!user || user.role !== 'admin') {
       router.push('/login');
       return;
@@ -148,7 +148,7 @@ export default function AdminTimeline() {
 
     // Collect all timestamps from selected teams
     const allEvents: { timestamp: Date; teamId: string; score: number }[] = [];
-    
+
     teamsTimeline.forEach(team => {
       if (selectedTeams.has(team.teamId)) {
         team.timeline.forEach(event => {
@@ -174,12 +174,12 @@ export default function AdminTimeline() {
 
     // Build chart data with running scores for each team
     const teamScores: { [teamId: string]: number } = {};
-    
+
     const data = uniqueTimestamps.map(ts => {
       const point: any = {
         timestamp: ts,
-        time: new Date(ts).toLocaleString('en-US', { 
-          month: 'short', 
+        time: new Date(ts).toLocaleString('en-US', {
+          month: 'short',
           day: 'numeric',
           hour: '2-digit',
           minute: '2-digit'
@@ -226,7 +226,7 @@ export default function AdminTimeline() {
       <Toaster position="top-right" theme="dark" richColors />
       <div className="min-h-screen bg-black">
         {/* Header */}
-        <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-md border-b rounded-b-3xl border-neutral-800">
+        <nav className="sticky top-0 z-50 bg-[#0B1220]/90 backdrop-blur-md border-b rounded-b-3xl border-[#1a2d4a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <h1 className="text-2xl font-bold text-white flex items-center gap-2">
@@ -237,10 +237,10 @@ export default function AdminTimeline() {
                   onClick={toggleChallengeAccess}
                   disabled={togglingChallenge}
                   className={cn(
-                    "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer flex items-center gap-2",
-                    allowPSAccess 
-                      ? "bg-amber-500/20 text-amber-400 border border-amber-500/50" 
-                      : "bg-neutral-800/50 text-white"
+                    "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer flex items-center gap-2",
+                    allowPSAccess
+                      ? "bg-amber-500/20 text-amber-400 border border-amber-500/50"
+                      : "bg-[#111A2E]/60 text-white"
                   )}
                 >
                   {allowPSAccess ? (
@@ -254,10 +254,10 @@ export default function AdminTimeline() {
                   onClick={toggleResultsVisibility}
                   disabled={togglingVisibility}
                   className={cn(
-                    "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer flex items-center gap-2",
-                    showResultsToUsers 
-                      ? "bg-green-500/20 text-green-400 border border-green-500/50" 
-                      : "bg-neutral-800/50 text-white"
+                    "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer flex items-center gap-2",
+                    showResultsToUsers
+                      ? "bg-green-500/20 text-green-400 border border-green-500/50"
+                      : "bg-[#111A2E]/60 text-white"
                   )}
                 >
                   {showResultsToUsers ? (
@@ -269,14 +269,14 @@ export default function AdminTimeline() {
                 </button>
                 <button
                   onClick={() => router.push('/admin/scoreboard')}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer"
                 >
                   Scoreboard
                   <BottomGradient color="green" />
                 </button>
                 <button
                   onClick={() => router.push('/admin/submissions')}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer"
                 >
                   Submissions
                   <BottomGradient color="purple" />
@@ -284,14 +284,14 @@ export default function AdminTimeline() {
                 <button
                   onClick={async () => { setRefreshing(true); await fetchTimeline(); setRefreshing(false); }}
                   disabled={refreshing}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer disabled:opacity-50 flex items-center gap-2"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer disabled:opacity-50 flex items-center gap-2"
                 >
                   {refreshing ? <Spinner className="w-4 h-4" /> : 'Refresh'}
                   <BottomGradient color="blue" />
                 </button>
                 <button
                   onClick={logout}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer"
                 >
                   Logout
                   <BottomGradient color="red" />
@@ -304,14 +304,14 @@ export default function AdminTimeline() {
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Score Timeline Chart */}
-          <Card className="bg-neutral-900/50 border-neutral-800">
-            <CardHeader className="border-b border-neutral-800">
+          <Card className="bg-[#111A2E]/50 border-[#1a2d4a]">
+            <CardHeader className="border-b border-[#1a2d4a]">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-xl text-white">Team Score Progression Over Time</CardTitle>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={selectAllTeams}
-                    className="px-4 py-2 text-xs bg-neutral-800/50 text-white rounded-md border border-neutral-700 hover:bg-neutral-700/50 transition-colors"
+                    className="px-4 py-2 text-xs bg-[#111A2E]/60 text-white rounded-md border border-[#1e3550] hover:bg-[#1a2d4a]/50 transition-colors"
                   >
                     Select All
                   </button>
@@ -329,15 +329,15 @@ export default function AdminTimeline() {
                       key={team.teamId}
                       onClick={() => toggleTeam(team.teamId)}
                       className={cn(
-                        "flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all cursor-pointer bg-neutral-800/50 border border-neutral-700 hover:bg-neutral-700/50",
+                        "flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all cursor-pointer bg-[#111A2E]/60 border border-[#1e3550] hover:bg-[#1a2d4a]/50",
                         isSelected
                           ? "text-white"
-                          : "text-neutral-500 hover:bg-neutral-700/50"
+                          : "text-cyan-400/40 hover:bg-[#1a2d4a]/50"
                       )}
                     >
                       <span
                         className="w-3 h-3 rounded-full"
-                        style={{ backgroundColor: isSelected ? color : '#525252' }}
+                        style={{ backgroundColor: isSelected ? color : '#1a2d4a' }}
                       />
                       {team.teamName}
                     </button>
@@ -350,21 +350,21 @@ export default function AdminTimeline() {
                 {chartData.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                      <XAxis 
-                        dataKey="time" 
-                        stroke="#525252" 
-                        tick={{ fill: '#a3a3a3', fontSize: 12 }}
-                        tickLine={{ stroke: '#525252' }}
+                      <XAxis
+                        dataKey="time"
+                        stroke="#00E5FF"
+                        tick={{ fill: '#9BA4B5', fontSize: 12 }}
+                        tickLine={{ stroke: '#00E5FF' }}
                       />
-                      <YAxis 
-                        stroke="#525252" 
-                        tick={{ fill: '#a3a3a3', fontSize: 12 }}
-                        tickLine={{ stroke: '#525252' }}
+                      <YAxis
+                        stroke="#00E5FF"
+                        tick={{ fill: '#9BA4B5', fontSize: 12 }}
+                        tickLine={{ stroke: '#00E5FF' }}
                       />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: '#171717', 
-                          border: '1px solid #404040',
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: '#111A2E',
+                          border: '1px solid #00E5FF',
                           borderRadius: '8px'
                         }}
                         labelStyle={{ color: '#fff' }}
@@ -388,7 +388,7 @@ export default function AdminTimeline() {
                     </LineChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="h-full flex items-center justify-center text-neutral-500">
+                  <div className="h-full flex items-center justify-center text-cyan-400/40">
                     {selectedTeams.size === 0 ? 'Select teams to view timeline' : 'No data available'}
                   </div>
                 )}

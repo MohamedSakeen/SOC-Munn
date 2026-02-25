@@ -12,12 +12,15 @@ export default function Home() {
   useEffect(() => {
     if (!loading) {
       if (user) {
+        // Redirection based on role
         if (user.role === 'admin') {
           router.push('/admin/submissions');
         } else {
+          // Both 'user' and legacy 'team' roles go to user dashboard
           router.push('/user/dashboard');
         }
       } else {
+        // Not logged in
         router.push('/login');
       }
     }

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -52,10 +52,10 @@ export default function AdminSubmissions() {
   const [allowPSAccess, setAllowPSAccess] = useState(false);
   const [togglingChallenge, setTogglingChallenge] = useState(false);
 
-  const BottomGradient = ({ color }: { color: 'red' | 'amber' | 'green' | 'purple' }) => {
+  const BottomGradient = ({ color }: { color: 'red' | 'blue' | 'green' | 'purple' }) => {
     const colorMap = {
       red: 'via-red-500',
-      amber: 'via-amber-500',
+      blue: 'via-blue-500',
       green: 'via-green-500',
       purple: 'via-purple-500'
     };
@@ -69,7 +69,7 @@ export default function AdminSubmissions() {
 
   useEffect(() => {
     if (authLoading) return;
-    
+
     if (!user || user.role !== 'admin') {
       router.push('/login');
       return;
@@ -197,7 +197,7 @@ export default function AdminSubmissions() {
       <Toaster position="top-right" theme="dark" richColors />
       <div className="min-h-screen bg-black">
         {/* Header */}
-        <nav className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-md border-b border-neutral-800 rounded-b-3xl">
+        <nav className="sticky top-0 z-50 bg-[#0B1220]/90 backdrop-blur-md border-b border-[#1a2d4a] rounded-b-3xl">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <h1 className="text-2xl font-bold text-white">Submissions & Progress</h1>
@@ -206,10 +206,10 @@ export default function AdminSubmissions() {
                   onClick={toggleChallengeAccess}
                   disabled={togglingChallenge}
                   className={cn(
-                    "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer flex items-center gap-2",
-                    allowPSAccess 
-                      ? "bg-amber-500/20 text-amber-400 border border-amber-500/50" 
-                      : "bg-neutral-800/50 text-white"
+                    "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer flex items-center gap-2",
+                    allowPSAccess
+                      ? "bg-blue-500/20 text-blue-300 border border-blue-500/50"
+                      : "bg-[#111A2E]/60 text-white"
                   )}
                 >
                   {allowPSAccess ? (
@@ -217,16 +217,16 @@ export default function AdminSubmissions() {
                   ) : (
                     <><Pause className="w-4 h-4" /> Challenge Paused</>
                   )}
-                  <BottomGradient color="amber" />
+                  <BottomGradient color="blue" />
                 </button>
                 <button
                   onClick={toggleResultsVisibility}
                   disabled={togglingVisibility}
                   className={cn(
-                    "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer flex items-center gap-2",
-                    showResultsToUsers 
-                      ? "bg-green-500/20 text-green-400 border border-green-500/50" 
-                      : "bg-neutral-800/50 text-white"
+                    "group/btn relative px-4 py-2 text-sm rounded-md font-medium shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer flex items-center gap-2",
+                    showResultsToUsers
+                      ? "bg-green-500/20 text-green-400 border border-green-500/50"
+                      : "bg-[#111A2E]/60 text-white"
                   )}
                 >
                   {showResultsToUsers ? (
@@ -238,14 +238,14 @@ export default function AdminSubmissions() {
                 </button>
                 <button
                   onClick={() => router.push('/admin/scoreboard')}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer"
                 >
                   Scoreboard
                   <BottomGradient color="green" />
                 </button>
                 <button
                   onClick={() => router.push('/admin/timeline')}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer"
                 >
                   Timeline
                   <BottomGradient color="purple" />
@@ -253,14 +253,14 @@ export default function AdminSubmissions() {
                 <button
                   onClick={async () => { setRefreshing(true); await fetchSubmissions(); setRefreshing(false); }}
                   disabled={refreshing}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer disabled:opacity-50 flex items-center gap-2"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer disabled:opacity-50 flex items-center gap-2"
                 >
                   {refreshing ? <Spinner className="w-4 h-4" /> : 'Refresh'}
                   <BottomGradient color="purple" />
                 </button>
                 <button
                   onClick={logout}
-                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-neutral-800/50 font-medium text-white shadow-[0px_1px_1px_1px_#ffffff40_inset,0px_0px_0px_0px_#ffffff40_inset] transition-all cursor-pointer"
+                  className="group/btn relative px-4 py-2 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer"
                 >
                   Logout
                   <BottomGradient color="red" />
@@ -281,8 +281,8 @@ export default function AdminSubmissions() {
                 onOpenChange={(open) => setExpandedTeam(open ? team.teamId : null)}
               >
                 <Card className={cn(
-                  "bg-neutral-900/50 border-neutral-800",
-                  expandedTeam !== team.teamId && "hover:bg-neutral-800/50"
+                  "bg-[#111A2E]/50 border-[#1a2d4a]",
+                  expandedTeam !== team.teamId && "hover:bg-[#111A2E]/60"
                 )}>
                   <CollapsibleTrigger asChild>
                     <CardHeader className="cursor-pointer transition-colors">
@@ -292,16 +292,16 @@ export default function AdminSubmissions() {
                           <div className={cn(
                             "w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg",
                             index === 0 ? "bg-yellow-500/20 text-yellow-400" :
-                            index === 1 ? "bg-neutral-400/20 text-neutral-300" :
-                            index === 2 ? "bg-orange-500/20 text-orange-400" :
-                            "bg-neutral-800 text-neutral-400"
+                              index === 1 ? "bg-cyan-400/20 text-cyan-300" :
+                                index === 2 ? "bg-orange-500/20 text-orange-400" :
+                                  "bg-[#1a2d4a] text-cyan-400/70"
                           )}>
                             {index + 1}
                           </div>
-                          
+
                           <div>
                             <CardTitle className="text-lg text-white">{team.teamName}</CardTitle>
-                            <p className="text-sm text-neutral-500">{team.teamMembers?.join(', ') || team.username}</p>
+                            <p className="text-sm text-cyan-400/40">{team.teamMembers?.join(', ') || team.username}</p>
                           </div>
                         </div>
 
@@ -309,29 +309,29 @@ export default function AdminSubmissions() {
                           {/* Stats */}
                           <div className="flex items-center gap-4 text-sm">
                             <div className="text-center">
-                              <p className="text-neutral-400">Solved</p>
+                              <p className="text-cyan-400/70">Solved</p>
                               <p className="text-white font-bold">{getCompletedCount(team)}/72</p>
                             </div>
                             <div className="text-center">
-                              <p className="text-neutral-400">First Bloods</p>
+                              <p className="text-cyan-400/70">First Bloods</p>
                               <p className="text-red-400 font-bold">{getFirstBloodCount(team)}</p>
                             </div>
                             <div className="text-center">
-                              <p className="text-neutral-400">Penalty</p>
+                              <p className="text-cyan-400/70">Penalty</p>
                               <p className="text-orange-400 font-bold">
-                                {getTotalPenalty(team)>0 ? `-${getTotalPenalty(team)}` : 0}
-                                </p>
+                                {getTotalPenalty(team) > 0 ? `-${getTotalPenalty(team)}` : 0}
+                              </p>
                             </div>
                             <div className="text-center">
-                              <p className="text-neutral-400">Score</p>
+                              <p className="text-cyan-400/70">Score</p>
                               <p className="text-amber-400 font-bold">{team.totalScore}</p>
                             </div>
                           </div>
-                          
+
                           {expandedTeam === team.teamId ? (
-                            <ChevronUp className="w-5 h-5 text-neutral-400" />
+                            <ChevronUp className="w-5 h-5 text-cyan-400/70" />
                           ) : (
-                            <ChevronDown className="w-5 h-5 text-neutral-400" />
+                            <ChevronDown className="w-5 h-5 text-cyan-400/70" />
                           )}
                         </div>
                       </div>
@@ -339,7 +339,7 @@ export default function AdminSubmissions() {
                   </CollapsibleTrigger>
 
                   <CollapsibleContent>
-                    <CardContent className="border-t border-neutral-800 pt-6">
+                    <CardContent className="border-t border-[#1a2d4a] pt-6">
                       {/* PS Grid */}
                       <div className="space-y-6">
                         {[1, 2, 3, 4, 5, 6].map(psNum => {
@@ -354,12 +354,12 @@ export default function AdminSubmissions() {
                                       -{getPSPenalty(psProgress)} penalty
                                     </Badge>
                                   )}
-                                  <Badge variant="outline" className="text-xs border-neutral-700 text-neutral-400">
+                                  <Badge variant="outline" className="text-xs border-[#1e3550] text-cyan-400/70">
                                     {psProgress?.totalScore || 0} pts
                                   </Badge>
                                 </div>
                               </div>
-                              
+
                               {/* Questions Grid */}
                               <div className="grid grid-cols-12 gap-2">
                                 {[...Array(12)].map((_, qIndex) => {
@@ -367,30 +367,30 @@ export default function AdminSubmissions() {
                                   const isCompleted = question?.isCompleted;
                                   const isFirstBlood = question?.isFirstBlood;
                                   const hasPenalty = question && (
-                                    (isCompleted && question.attempts > 1) || 
+                                    (isCompleted && question.attempts > 1) ||
                                     (!isCompleted && question.attempts > 0)
                                   );
                                   const penaltyAmount = question ? (
                                     isCompleted ? (question.attempts - 1) * 5 : question.attempts * 5
                                   ) : 0;
-                                  
+
                                   return (
                                     <div
                                       key={qIndex}
                                       className={cn(
                                         "relative aspect-square rounded-md flex items-center justify-center text-xs font-bold transition-all",
-                                        isCompleted 
-                                          ? isFirstBlood 
-                                            ? "bg-red-500/20 text-red-400 border border-red-500/50" 
+                                        isCompleted
+                                          ? isFirstBlood
+                                            ? "bg-red-500/20 text-red-400 border border-red-500/50"
                                             : "bg-green-500/20 text-green-400 border border-green-500/50"
                                           : question?.attempts && question.attempts > 0
                                             ? "bg-orange-500/20 text-orange-400 border border-orange-500/50"
                                             : "bg-neutral-800/50 text-neutral-500 border border-neutral-700/50"
                                       )}
-                                      title={`Q${qIndex + 1}: ${isCompleted 
-                                        ? `Solved${isFirstBlood ? ' (First Blood!)' : ''} | Score: ${question?.score}pts${question && question.attempts > 1 ? ` | Penalty: -${(question.attempts - 1) * 5}pts (${question.attempts - 1} wrong)` : ''}` 
-                                        : question?.attempts 
-                                          ? `${question.attempts} wrong attempts | Penalty: -${question.attempts * 5}pts` 
+                                      title={`Q${qIndex + 1}: ${isCompleted
+                                        ? `Solved${isFirstBlood ? ' (First Blood!)' : ''} | Score: ${question?.score}pts${question && question.attempts > 1 ? ` | Penalty: -${(question.attempts - 1) * 5}pts (${question.attempts - 1} wrong)` : ''}`
+                                        : question?.attempts
+                                          ? `${question.attempts} wrong attempts | Penalty: -${question.attempts * 5}pts`
                                           : 'Not attempted'}`}
                                     >
                                       {isCompleted ? (
@@ -426,9 +426,9 @@ export default function AdminSubmissions() {
           </div>
 
           {teams.length === 0 && (
-            <Card className="bg-neutral-900/50 border-neutral-800">
+            <Card className="bg-[#111A2E]/50 border-[#1a2d4a]">
               <CardContent className="py-12 text-center">
-                <p className="text-neutral-400">No teams found</p>
+                <p className="text-cyan-400/70">No teams found</p>
               </CardContent>
             </Card>
           )}

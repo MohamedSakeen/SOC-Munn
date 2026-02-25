@@ -13,19 +13,19 @@ export function NoirBackground({ children, variant = 'default', className }: Noi
   return (
     <div className={cn("relative min-h-screen bg-black", className)}>
       {/* Base gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-neutral-950 via-black to-neutral-900 pointer-events-none" />
-      
+      <div className="fixed inset-0 bg-gradient-to-br from-[#050d1a] via-black to-[#080f1e] pointer-events-none" />
+
       {/* Vignette effect */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] pointer-events-none" />
 
       {/* Grid pattern */}
       {(variant === 'grid' || variant === 'default') && (
-        <div 
+        <div
           className="fixed inset-0 opacity-[0.03] pointer-events-none"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+              linear-gradient(rgba(41,121,255,0.06) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(41,121,255,0.06) 1px, transparent 1px)
             `,
             backgroundSize: '50px 50px',
           }}
@@ -56,7 +56,7 @@ export function NoirBackground({ children, variant = 'default', className }: Noi
 
       {/* Scanlines effect */}
       {variant === 'scanlines' && (
-        <div 
+        <div
           className="fixed inset-0 opacity-[0.05] pointer-events-none"
           style={{
             backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px)',
@@ -75,8 +75,8 @@ export function NoirBackground({ children, variant = 'default', className }: Noi
       </div>
 
       {/* Subtle amber accent glow */}
-      <div className="fixed top-0 left-1/4 w-1/2 h-1/3 bg-amber-500/5 blur-[150px] pointer-events-none" />
-      <div className="fixed bottom-0 right-1/4 w-1/2 h-1/3 bg-amber-700/5 blur-[150px] pointer-events-none" />
+      <div className="fixed top-0 left-1/4 w-1/2 h-1/3 bg-blue-600/8 blur-[150px] pointer-events-none" />
+      <div className="fixed bottom-0 right-1/4 w-1/2 h-1/3 bg-cyan-500/5 blur-[150px] pointer-events-none" />
 
       {/* Content */}
       <div className="relative z-10">
@@ -92,20 +92,20 @@ export function RadarSweep() {
     <div className="fixed bottom-8 right-8 w-32 h-32 opacity-20 pointer-events-none">
       <div className="relative w-full h-full">
         {/* Radar circles */}
-        <div className="absolute inset-0 border border-green-500/30 rounded-full" />
-        <div className="absolute inset-4 border border-green-500/20 rounded-full" />
-        <div className="absolute inset-8 border border-green-500/10 rounded-full" />
-        
+        <div className="absolute inset-0 border border-blue-500/30 rounded-full" />
+        <div className="absolute inset-4 border border-blue-500/20 rounded-full" />
+        <div className="absolute inset-8 border border-blue-500/10 rounded-full" />
+
         {/* Sweep line */}
         <motion.div
-          className="absolute top-1/2 left-1/2 w-1/2 h-0.5 bg-gradient-to-r from-green-500 to-transparent origin-left"
+          className="absolute top-1/2 left-1/2 w-1/2 h-0.5 bg-gradient-to-r from-blue-500 to-transparent origin-left"
           style={{ marginTop: '-1px' }}
           animate={{ rotate: 360 }}
           transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
         />
-        
+
         {/* Center dot */}
-        <div className="absolute top-1/2 left-1/2 w-2 h-2 -mt-1 -ml-1 bg-green-500 rounded-full" />
+        <div className="absolute top-1/2 left-1/2 w-2 h-2 -mt-1 -ml-1 bg-blue-500 rounded-full" />
       </div>
     </div>
   );
@@ -155,11 +155,11 @@ interface EvidenceTagProps {
 export function EvidenceTag({ number, label, className }: EvidenceTagProps) {
   return (
     <div className={cn("inline-flex items-center gap-2", className)}>
-      <div className="w-8 h-8 rounded bg-yellow-500 text-black font-bold flex items-center justify-center text-sm font-mono">
+      <div className="w-8 h-8 rounded bg-blue-500 text-white font-bold flex items-center justify-center text-sm font-mono">
         {number}
       </div>
       {label && (
-        <span className="text-xs text-yellow-500 font-mono uppercase tracking-wider">
+        <span className="text-xs text-blue-500 font-mono uppercase tracking-wider">
           {label}
         </span>
       )}

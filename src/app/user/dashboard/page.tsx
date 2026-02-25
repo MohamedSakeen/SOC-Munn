@@ -107,7 +107,7 @@ export default function UserDashboard() {
       toast.error('Challenge has not started yet. Please wait for admin to begin the event.');
       return;
     }
-    router.push(`/user/ps/${psNumber}`);
+    router.push(`/user/ps/${String(psNumber).padStart(2, '0')}`);
   };
 
   const getProgressColor = (completed: number, total: number) => {

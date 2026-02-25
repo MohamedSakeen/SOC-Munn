@@ -108,31 +108,39 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
     if (authLoading) return;
 
     params.then(resolvedParams => {
-      const num = parseInt(resolvedParams.number);
+      const rawNumber = resolvedParams.number;
+      const num = parseInt(rawNumber, 10);
       setPsNumber(num);
 
-      if (!user || user.role !== 'user') {
+      if (!user || (user.role !== 'user' && user.role !== 'team')) {
         router.push('/login');
         return;
       }
 
-      fetchPS(num);
+      fetchPS(rawNumber);
     });
   }, [params, user, authLoading, router]);
 
-  const fetchPS = async (num: number) => {
+  const fetchPS = async (rawNum: string) => {
     try {
-      const response = await api.get(`/user/ps/${num}`);
+      console.log(`Fetching PS with raw value: "${rawNum}"`);
+      const response = await api.get(`/user/ps/${rawNum}`);
       setPs(response.data);
 
-      // Open first unanswered question
-      const firstUnanswered = response.data.questions.findIndex((q: Question) => !q.isCompleted);
-      setOpenQuestion(firstUnanswered >= 0 ? firstUnanswered : null);
+      if (response.data.questions) {
+        const firstUnanswered = response.data.questions.findIndex((q: Question) => !q.isCompleted);
+        setOpenQuestion(firstUnanswered >= 0 ? firstUnanswered : null);
+      }
 
       setLoading(false);
     } catch (error: any) {
       console.error('Failed to fetch PS:', error);
-      const message = error.response?.data?.message || 'Failed to load problem statement';
+      const serverMessage = error.response?.data?.message;
+      const serverDetails = error.response?.data?.details;
+      const message = serverMessage
+        ? `${serverMessage}${serverDetails ? ` (${serverDetails})` : ''}`
+        : 'Failed to load problem statement';
+
       router.push(`/user/dashboard?error=${encodeURIComponent(message)}`);
     }
   };
@@ -146,7 +154,9 @@ export default function PSPage({ params }: { params: Promise<{ number: string }>
 
     setSubmittingQuestion(questionIndex);
     try {
-      const response = await api.post(`/user/ps/${psNumber}/check/${questionIndex}`, { answer });
+      const rawNum = window.location.pathname.split('/').pop() || String(psNumber).padStart(2, '0');
+      console.log(`Submitting answer for PS: "${rawNum}", Question: ${questionIndex}`);
+      const response = await api.post(`/user/ps/${rawNum}/check/${questionIndex}`, { answer });
 
       // Update local state with result
       setPs(prev => {

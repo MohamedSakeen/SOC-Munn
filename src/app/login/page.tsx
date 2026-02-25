@@ -98,8 +98,8 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await login(username, password);
-    } catch {
-      setError('Invalid credentials');
+    } catch (err: any) {
+      setError(err.message || 'Invalid credentials');
     } finally {
       setIsLoading(false);
     }

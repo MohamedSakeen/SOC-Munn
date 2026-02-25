@@ -33,12 +33,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
-    
+
     if (storedToken && storedUser) {
       setToken(storedToken);
       const parsedUser = JSON.parse(storedUser);
       setUser(parsedUser);
-      
+
       // Also set in cookies for middleware
       setCookie('token', storedToken);
       setCookie('user', storedUser);
@@ -54,19 +54,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     if (!response.ok) {
-      throw new Error('Invalid credentials');
+      const errorData = await response.json().catch(() => ({}));
+      console.error('Login failed:', response.status, errorData);
+      throw new Error(errorData.message || 'Invalid credentials');
     }
 
     const data = await response.json();
-    
+
     // Store in localStorage
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
-    
+
     // Store in cookies for middleware
     setCookie('token', data.token);
     setCookie('user', JSON.stringify(data.user));
-    
+
     setToken(data.token);
     setUser(data.user);
 

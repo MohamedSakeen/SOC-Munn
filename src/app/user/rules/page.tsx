@@ -184,59 +184,6 @@ export default function RulesPage() {
             </motion.div>
           ))}
         </div>
-
-        {/* Download Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="mt-12"
-        >
-          <Card className="bg-[#111A2E]/50 border-[#1a2d4a]/50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-xl">
-                <div className="p-2 rounded-lg bg-green-500/10">
-                  <Download className="w-6 h-6 text-green-400" />
-                </div>
-                <span className="text-white font-mono">DOWNLOAD RESOURCES</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-cyan-400/50 text-sm mb-6">
-                Download the required resources to complete the challenges. You can either download the VM image or use the local server.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                {/* VM Download Button */}
-                <a
-                  href="https://drive.google.com/file/d/1nH1iAwu5QGt-0UOQEJSyJuO0H4gJGD5r/view?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group/btn relative px-6 py-3 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer font-mono flex items-center gap-2 hover:bg-[#1a2d4a]/50"
-                >
-                  <Download className="w-4 h-4" />
-                  DOWNLOAD VM IMAGE
-                  <BottomGradient />
-                </a>
-
-                {/* Local Server Download Button */}
-                <a
-                  href="http://172.16.17.54:8080/Ubutu-22%20%28Revil%29%201.ova"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group/btn relative px-6 py-3 text-sm rounded-md bg-[#111A2E]/60 font-medium text-white shadow-[0px_1px_1px_1px_rgba(0,229,255,0.3)_inset,0px_0px_0px_0px_rgba(0,229,255,0.3)_inset] transition-all cursor-pointer font-mono flex items-center gap-2 hover:bg-[#1a2d4a]/50"
-                >
-                  <Server className="w-4 h-4" />
-                  LOCAL SERVER DOWNLOAD
-                  <BottomGradient />
-                </a>
-              </div>
-              <p className="text-cyan-400/40 text-xs mt-4 font-mono">
-                Note: Local server requires the host to run &quot;py -m http.server&quot; on the network.
-              </p>
-            </CardContent>
-          </Card>
-        </motion.div>
-
         {/* Start Button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

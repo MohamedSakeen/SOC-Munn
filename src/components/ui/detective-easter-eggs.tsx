@@ -12,7 +12,7 @@ export const detectiveQuotes = [
   "Excellent deduction, Detective.",
   "Your instincts serve you well.",
   "The pieces are falling into place.",
-  "Sherlock would be impressed.",
+  "Invistigator would be impressed.",
   "Case notes updated successfully.",
 ];
 
@@ -28,7 +28,7 @@ export const firstBloodQuotes = [
 // Wrong answer quotes
 export const wrongAnswerQuotes = [
   "Not quite, Detective. The truth is out there.",
-  "Even Sherlock had his off days.",
+  "Even Invistigator had his off days.",
   "The evidence doesn't quite match up.",
   "Reconsider the clues, Agent.",
   "Close, but the culprit remains at large.",
@@ -46,7 +46,7 @@ export const caseClosedQuotes = [
 export const missionCompleteQuotes = [
   "🎊 Congratulations, Detective Pikachu! You've cracked every case! ⚡",
   "🏆 Mission Accomplished, 007. M would be proud.",
-  "🎭 The game is afoot no more, Sherlock! All mysteries solved.",
+  "🎭 The game is afoot no more, Invistigator! All mysteries solved.",
   "👏 Elementary! You've proven yourself the greatest detective.",
   "🌟 Outstanding, Agent! You've earned your license to thrill.",
 ];

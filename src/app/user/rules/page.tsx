@@ -73,7 +73,7 @@ export default function RulesPage() {
     {
       icon: FileText,
       title: "Problem Statements",
-      description: "There are 11 problem statements, each containing 12 questions. Questions must be answered in any order within each problem statement."
+      description: "There are 11 problem statements, each containing 10 to 14 questions. Questions must be answered in any order within each problem statement."
     },
     {
       icon: Trophy,
